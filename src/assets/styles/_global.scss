@@ -1,0 +1,49 @@
+@use 'variables' as *;
+@use 'helpers/mixins' as *;
+@use 'helpers/media' as *;
+@use 'helpers/functions' as *;
+
+$c-font: $c-light-main;
+$c-background: $c-bg-main;
+$c-link: $c-link-main;
+$c-link-hover: $c-link-hover;
+$f-family: $f-family-base;
+
+body {
+  @include fluid-text(18, 14);
+}
+
+h1 {
+  @include fluid-text(70, 30);
+}
+
+h2 {
+  @include fluid-text(58, 25);
+}
+
+h3 {
+  @include fluid-text(47, 20);
+}
+
+a,
+button,
+input,
+select,
+svg * {
+  transition: $transition-duration;
+}
+
+a {
+  color: $c-link;
+  list-style: none;
+
+  @include hover {
+    color: $c-link-hover;
+  }
+}
+
+:focus-visible {
+  outline: rem(2) dashed;
+  outline-offset: rem(4);
+  transition-duration: 0s !important;
+}

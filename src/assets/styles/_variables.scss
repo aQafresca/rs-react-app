@@ -1,0 +1,17 @@
+@use 'helpers/functions' as *;
+
+$c-light-main: #eef8ce;
+$c-light-secondary: #d9e03c;
+$c-dark-main: #20211c;
+$c-dark-secondary: #0f170f;
+$c-bg-main: #1b1b1b;
+$c-link-hover: #e0ab26;
+$c-link-main: rgba($c-link-hover, 0.6);
+$c-primary-300: rgb(139 134 162 / 40%);
+$c-first-comet: gold;
+$c-second-comet: lime;
+$container-width: #{rem(1280)};
+$container-padding-x: #{rem(20)};
+$transition-duration: 0.2s;
+$f-family-base: 'Roboto', 'sans-serif';
+$f-family-accent: 'Inter', 'sans-serif';
