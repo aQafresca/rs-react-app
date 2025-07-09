@@ -11,6 +11,7 @@ $c-text-secondary: $c-light-secondary;
 .button {
   @include flex-center;
 
+  height: rem(38);
   border-radius: rem(5);
 
   &:disabled {
