@@ -13,4 +13,4 @@ export const CHAR = {
   GENDER: 'Gender:',
 };
 
-export const BASE_LIMIT_PER_PAGE = 9;
+export const BASE_LIMIT_VISIBLE_PAGINATION = 4;

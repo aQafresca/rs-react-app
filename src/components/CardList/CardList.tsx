@@ -6,12 +6,12 @@ import Card from '@components/CardList/Card/Card.tsx';
 import type { IApiResponse, ICharactersData } from '@/interface/interface.ts';
 import Loader from '@components/Loader/Loader.tsx';
 import Pagination from '@components/Pagination/Pagination.tsx';
-import { BASE_LIMIT_PER_PAGE } from '@/constants/constants.ts';
 
 interface IState {
   loading: boolean;
   characters: ICharactersData[];
   currentPage: number;
+  totalPages: number;
 }
 
 class CardList extends React.Component<unknown, IState> {
@@ -19,49 +19,51 @@ class CardList extends React.Component<unknown, IState> {
     loading: true,
     characters: [],
     currentPage: 1,
+    totalPages: 0,
   };
 
   componentDidMount(): void {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const data: IApiResponse = await getCharacters();
-        this.setState({ characters: data.results, loading: false });
-      } catch (error) {
-        console.error('error get data', error);
-        this.setState({ loading: false });
-      }
-    };
-    void fetchData();
+    void this.fetchData(this.state.currentPage);
   }
 
+  componentDidUpdate(_: unknown, prevState: IState): void {
+    if (prevState.currentPage !== this.state.currentPage) {
+      void this.fetchData(this.state.currentPage);
+    }
+  }
+
+  fetchData = async (page: number): Promise<void> => {
+    this.setState({ loading: true });
+    try {
+      const data: IApiResponse = await getCharacters(page);
+      this.setState({
+        characters: data.results,
+        totalPages: data.info.pages,
+        loading: false,
+      });
+    } catch (error) {
+      console.error('error get data', error);
+      this.setState({ loading: false });
+    }
+  };
+
   render(): JSX.Element {
-    const { loading, characters, currentPage } = this.state;
-    const startIndex: number = (currentPage - 1) * BASE_LIMIT_PER_PAGE;
-    const endIndex: number = startIndex + BASE_LIMIT_PER_PAGE;
-    const currentCharacters: ICharactersData[] = characters.slice(
-      startIndex,
-      endIndex
-    );
+    const { loading, characters, currentPage, totalPages } = this.state;
 
     return (
-      <>
+      <div className={styles.wrapper}>
         {loading && <Loader />}
-        <div className={styles.wrapper}>
-          {currentCharacters.map(
-            (char: ICharactersData): JSX.Element => (
-              <Card key={char.id} {...char} />
-            )
-          )}
+        <div className={styles.inner}>
+          {characters.map((char: ICharactersData) => (
+            <Card key={char.id} {...char} />
+          ))}
         </div>
         <Pagination
-          currentPage={this.state.currentPage}
-          totalItems={this.state.characters.length}
-          itemsPerPage={BASE_LIMIT_PER_PAGE}
-          onPageChange={(page: number): void =>
-            this.setState({ currentPage: page })
-          }
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page: number) => this.setState({ currentPage: page })}
         />
-      </>
+      </div>
     );
   }
 }

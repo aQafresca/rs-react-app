@@ -2,25 +2,19 @@ import styles from './Pagination.module.scss';
 import type { JSX } from 'react';
 import Button from '@components/Button/Button.tsx';
 import { LiaChevronLeftSolid, LiaChevronRightSolid } from 'react-icons/lia';
+import { getPaginationPages } from '@/core/utils/pagination/getPaginationPages.ts';
 
 interface IProps {
   currentPage: number;
-  totalItems: number;
-  itemsPerPage: number;
+  totalPages: number;
   onPageChange: (page: number) => void;
 }
 
 const Pagination = ({
   currentPage,
-  totalItems,
-  itemsPerPage,
+  totalPages,
   onPageChange,
 }: IProps): JSX.Element => {
-  const maxPage: number = Math.ceil(totalItems / itemsPerPage);
-  const pages: number[] = Array.from(
-    { length: maxPage },
-    (_, i): number => i + 1
-  );
   return (
     <div className={styles.pagination}>
       <Button
@@ -33,14 +27,17 @@ const Pagination = ({
         <LiaChevronLeftSolid />
       </Button>
       <div className={styles.pagination__box}>
-        {pages.map(
-          (page): JSX.Element => (
+        {getPaginationPages(currentPage, totalPages).map(
+          (page: string | number): JSX.Element => (
             <Button
               key={page}
-              type={'button'}
-              size={'x-small'}
-              className={`${styles.pagination__button} ${page === currentPage ? styles['is-active'] : ''}`}
-              onClick={(): void => onPageChange(page)}
+              type="button"
+              size="x-small"
+              className={`${styles.pagination__button} ${
+                page === currentPage ? styles['is-active'] : ''
+              }`}
+              onClick={() => typeof page === 'number' && onPageChange(page)}
+              disabled={page === '...'}
             >
               {page}
             </Button>
@@ -52,7 +49,7 @@ const Pagination = ({
         type="button"
         size="x-small"
         onClick={(): void => onPageChange(currentPage + 1)}
-        disabled={currentPage === maxPage}
+        disabled={currentPage === totalPages}
       >
         <LiaChevronRightSolid />
       </Button>
