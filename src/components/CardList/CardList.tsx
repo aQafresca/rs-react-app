@@ -3,13 +3,13 @@ import * as React from 'react';
 import type { JSX } from 'react';
 import { getCharacters } from '@/core/api/getCharacters.ts';
 import Card from '@components/CardList/Card/Card.tsx';
-import type { IApiResponse, ICharactersData } from '@/interface/interface.ts';
+import type { TApiResponse, TCharacter } from '@/shema/characterShema.ts';
 import Loader from '@components/Loader/Loader.tsx';
 import Pagination from '@components/Pagination/Pagination.tsx';
 
 interface IState {
   loading: boolean;
-  characters: ICharactersData[];
+  characters: TCharacter[];
   currentPage: number;
   totalPages: number;
 }
@@ -35,7 +35,7 @@ class CardList extends React.Component<unknown, IState> {
   fetchData = async (page: number): Promise<void> => {
     this.setState({ loading: true });
     try {
-      const data: IApiResponse = await getCharacters(page);
+      const data: TApiResponse = await getCharacters(page);
       this.setState({
         characters: data.results,
         totalPages: data.info.pages,
@@ -54,7 +54,7 @@ class CardList extends React.Component<unknown, IState> {
       <div className={styles.wrapper}>
         {loading && <Loader />}
         <div className={styles.inner}>
-          {characters.map((char: ICharactersData) => (
+          {characters.map((char: TCharacter) => (
             <Card key={char.id} {...char} />
           ))}
         </div>

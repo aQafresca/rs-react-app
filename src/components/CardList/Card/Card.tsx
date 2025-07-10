@@ -1,9 +1,9 @@
 import styles from './Card.module.scss';
-import type { ICharactersData } from '@/interface/interface.ts';
+import type { TCharacter } from '@/shema/characterShema.ts';
 import { CHAR } from '@/constants/constants.ts';
 import type { JSX } from 'react';
 
-const Card = (props: ICharactersData): JSX.Element => {
+const Card = (props: TCharacter): JSX.Element => {
   return (
     <div className={styles.card}>
       <div>
