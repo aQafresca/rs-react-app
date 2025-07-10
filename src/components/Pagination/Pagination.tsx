@@ -28,9 +28,9 @@ const Pagination = ({
       </Button>
       <div className={styles.pagination__box}>
         {getPaginationPages(currentPage, totalPages).map(
-          (page: string | number): JSX.Element => (
+          (page: string | number, index: number): JSX.Element => (
             <Button
-              key={page}
+              key={typeof page === 'number' ? page : `ellipsis-${index}`}
               type="button"
               size="x-small"
               className={`${styles.pagination__button} ${
