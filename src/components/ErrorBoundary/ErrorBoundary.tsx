@@ -3,6 +3,7 @@ import { type ReactNode } from 'react';
 import { Component } from 'react';
 import * as React from 'react';
 import Button from '@components/Button/Button.tsx';
+import { BUTTON_LABELS } from '@/constants/constants.ts';
 
 interface IProps {
   children: ReactNode;
@@ -30,9 +31,9 @@ class ErrorBoundary extends Component<IProps, IState> {
           <Button
             className={styles.error__button}
             variant={'secondary'}
-            onClick={() => window.location.reload()}
+            onClick={(): void => window.location.reload()}
           >
-            reload
+            {BUTTON_LABELS.RELOAD}
           </Button>
         </div>
       );
