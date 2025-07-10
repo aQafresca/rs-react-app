@@ -1,0 +1,8 @@
+@use '@assets/styles/helpers/functions' as *;
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20);
+  justify-content: center;
+}
