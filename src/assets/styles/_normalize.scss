@@ -27,7 +27,8 @@ body,
   border: none;
 }
 
-:where(ul[class]) {
+ul,
+li {
   list-style: none;
 }
 
