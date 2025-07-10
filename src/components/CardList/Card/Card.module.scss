@@ -1,0 +1,29 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/variables' as *;
+
+$c-bg-card: $c-link-main;
+
+.card {
+  overflow: hidden;
+
+  width: rem(300);
+  height: rem(500);
+  border-radius: rem(10);
+
+  background: $c-bg-card;
+
+  &__item {
+    display: flex;
+    gap: rem(20);
+    align-items: center;
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+  &__label {
+    font-size: rem(20);
+    font-weight: bold;
+  }
+}
