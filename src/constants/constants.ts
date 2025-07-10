@@ -12,3 +12,5 @@ export const CHAR = {
   SPECIES: 'Species:',
   GENDER: 'Gender:',
 };
+
+export const BASE_LIMIT_PER_PAGE = 9;

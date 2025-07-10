@@ -1,0 +1,27 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/helpers/mixins' as *;
+
+.pagination {
+  display: flex;
+  gap: rem(20);
+  align-self: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: rem(700);
+
+  &__button {
+    max-width: 100px;
+    height: rem(25);
+  }
+
+  &__box {
+    display: flex;
+    gap: rem(5);
+    max-width: 600px;
+  }
+
+  .is-active {
+    background-color: red;
+  }
+}
