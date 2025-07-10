@@ -13,4 +13,5 @@ export const CHAR = {
   GENDER: 'Gender:',
 };
 
-export const BASE_LIMIT_VISIBLE_PAGINATION = 4;
+export const BASE_LIMIT_VISIBLE_PAGINATION = 3;
+export const ELLIPSIS = '.';

@@ -3,6 +3,7 @@ import type { JSX } from 'react';
 import Button from '@components/Button/Button.tsx';
 import { LiaChevronLeftSolid, LiaChevronRightSolid } from 'react-icons/lia';
 import { getPaginationPages } from '@/core/utils/pagination/getPaginationPages.ts';
+import { ELLIPSIS } from '@/constants/constants.ts';
 
 interface IProps {
   currentPage: number;
@@ -37,7 +38,7 @@ const Pagination = ({
                 page === currentPage ? styles['is-active'] : ''
               }`}
               onClick={() => typeof page === 'number' && onPageChange(page)}
-              disabled={page === '...'}
+              disabled={page === ELLIPSIS}
             >
               {page}
             </Button>

@@ -1,4 +1,7 @@
-import { BASE_LIMIT_VISIBLE_PAGINATION } from '@/constants/constants.ts';
+import {
+  BASE_LIMIT_VISIBLE_PAGINATION,
+  ELLIPSIS,
+} from '@/constants/constants.ts';
 
 export const getPaginationPages = (
   currentPage: number,
@@ -24,7 +27,7 @@ export const getPaginationPages = (
   pages.push(1);
 
   if (start > 2) {
-    pages.push('...');
+    pages.push(ELLIPSIS);
   }
 
   for (let i = start; i <= end; i++) {
@@ -32,7 +35,7 @@ export const getPaginationPages = (
   }
 
   if (end < totalPages - 1) {
-    pages.push('...');
+    pages.push(ELLIPSIS);
   }
 
   if (totalPages > 1) {
