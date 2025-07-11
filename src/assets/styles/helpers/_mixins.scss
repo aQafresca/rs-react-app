@@ -1,16 +1,6 @@
 @use 'sass:math';
 @use 'functions' as *;
 
-@mixin hide {
-  visibility: hidden;
-  opacity: 0;
-}
-
-@mixin show {
-  visibility: visible;
-  opacity: 1;
-}
-
 @mixin fluid-text($max, $min) {
   font-size: fluid($max, $min);
 }
@@ -36,21 +26,4 @@
 @mixin square($size) {
   width: $size;
   height: $size;
-}
-
-@mixin visually-hidden {
-  position: absolute !important;
-
-  overflow: hidden !important;
-
-  width: 1px !important;
-  height: 1px !important;
-  margin: -1px !important;
-  padding: 0 !important;
-  border: 0 !important;
-
-  white-space: nowrap !important;
-
-  clip: rect(0 0 0 0) !important;
-  clip-path: inset(100%) !important;
 }

@@ -7,19 +7,3 @@
   margin-inline: auto;
   padding-inline: $container-padding-x;
 }
-
-.visual-hidden {
-  @include visually-hidden;
-}
-
-.hidden-mobile {
-  @include mobile {
-    display: none !important;
-  }
-}
-
-.visible-mobile {
-  @include mobile-above {
-    display: none !important;
-  }
-}

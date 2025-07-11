@@ -2,15 +2,17 @@
 @use '@assets/styles/variables' as *;
 
 $c-bg-card: $c-link-main;
+$c-border-card: $c-primary-300;
 
 .card {
   overflow: hidden;
 
   width: rem(300);
   height: rem(500);
+  border: 1px solid $c-border-card;
   border-radius: rem(10);
 
-  background: $c-bg-card;
+  background: transparent;
 
   &__item {
     display: flex;

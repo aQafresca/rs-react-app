@@ -1,7 +1,7 @@
 @use '@assets/styles/helpers/functions' as *;
-@use '@assets/styles/helpers/mixins' as *;
-@use '@assets/styles/helpers/media' as *;
 @use '@assets/styles/variables' as *;
+
+$c-bg-input: $c-light-secondary;
 
 .input {
   width: 100%;
@@ -9,6 +9,7 @@
   padding: 0 rem(10);
   border-radius: rem(10);
 
+  background-color: $c-bg-input;
   outline: none;
 
   &__wrapper {
