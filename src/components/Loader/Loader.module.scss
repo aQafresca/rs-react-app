@@ -1,0 +1,87 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/helpers/mixins' as *;
+@use '@assets/styles/variables' as *;
+
+$c-first-line: $c-first-comet;
+$c-second-line: $c-second-comet;
+
+.loader {
+  @include square(rem(100));
+  @include flex-center;
+  @include abs-center;
+
+  position: fixed;
+  font-size: rem(10);
+
+  &__face {
+    position: absolute;
+    border-style: solid;
+    border-radius: 50%;
+    animation: animate 3s linear infinite;
+
+    &:nth-child(1) {
+      --deg: -45deg;
+
+      width: 100%;
+      height: 100%;
+      border-color: currentcolor transparent transparent currentcolor;
+      border-width: 0.2em 0.2em 0 0;
+
+      color: $c-first-line;
+
+      animation-direction: normal;
+    }
+
+    &:nth-child(2) {
+      --deg: -135deg;
+
+      width: 70%;
+      height: 70%;
+      border-color: currentcolor currentcolor transparent transparent;
+      border-width: 0.2em 0 0 0.2em;
+
+      color: $c-second-line;
+
+      animation-direction: reverse;
+    }
+  }
+
+  &__circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: left;
+    transform: rotate(var(--deg));
+
+    width: 50%;
+    height: 0.1em;
+
+    background-color: transparent;
+
+    &::before {
+      @include square(rem(10));
+
+      content: '';
+
+      position: absolute;
+      top: -0.5em;
+      right: -0.5em;
+
+      border-radius: 50%;
+
+      background-color: currentcolor;
+      box-shadow:
+        0 0 2em,
+        0 0 4em,
+        0 0 6em,
+        0 0 10em,
+        0 0 0 0.5em rgb(255 255 0 / 10%);
+    }
+  }
+}
+
+@keyframes animate {
+  to {
+    transform: rotate(1turn);
+  }
+}

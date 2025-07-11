@@ -1,0 +1,13 @@
+@use '@assets/styles/helpers/functions' as *;
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20);
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}

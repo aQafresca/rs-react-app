@@ -1,0 +1,31 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/variables' as *;
+
+$c-bg-card: $c-link-main;
+$c-border-card: $c-primary-300;
+
+.card {
+  overflow: hidden;
+
+  width: rem(300);
+  height: rem(500);
+  border: 1px solid $c-border-card;
+  border-radius: rem(10);
+
+  background: transparent;
+
+  &__item {
+    display: flex;
+    gap: rem(20);
+    align-items: center;
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+  &__label {
+    font-size: rem(20);
+    font-weight: bold;
+  }
+}
