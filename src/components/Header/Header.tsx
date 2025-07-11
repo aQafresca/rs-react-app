@@ -23,8 +23,6 @@ class Header extends Component {
       LOCALSTORAGE_KEYS.SEARCH_QUERY
     );
 
-    console.log(savedValue);
-
     if (savedValue) {
       this.setState({ inputValue: savedValue });
       searchStore.setQuery(savedValue);
