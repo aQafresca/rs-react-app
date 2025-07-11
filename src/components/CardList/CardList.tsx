@@ -6,36 +6,48 @@ import Card from '@components/CardList/Card/Card.tsx';
 import type { TApiResponse, TCharacter } from '@/shema/characterShema.ts';
 import Loader from '@components/Loader/Loader.tsx';
 import Pagination from '@components/Pagination/Pagination.tsx';
+import { searchStore } from '@/core/store/serchStore.ts';
+import EmptyList from '@components/EmptyList/EmptyList.tsx';
+import type { ICardListState } from '@/interface/interface.ts';
 
-interface IState {
-  loading: boolean;
-  characters: TCharacter[];
-  currentPage: number;
-  totalPages: number;
-}
-
-class CardList extends React.Component<unknown, IState> {
-  state: IState = {
+class CardList extends React.Component<unknown, ICardListState> {
+  state: ICardListState = {
     loading: true,
     characters: [],
     currentPage: 1,
     totalPages: 0,
+    query: '',
   };
 
+  unsubscribe: (() => void) | null = null;
+
   componentDidMount(): void {
-    void this.fetchData(this.state.currentPage);
+    const initQuery: string = searchStore.getQuery();
+    void this.fetchData(1, initQuery);
+
+    this.unsubscribe = searchStore.subscribe((query): void => {
+      if (this.state.query !== query) {
+        this.setState({ query, currentPage: 1 }, (): void => {
+          void this.fetchData(1, query);
+        });
+      }
+    });
   }
 
-  componentDidUpdate(_: unknown, prevState: IState): void {
+  componentDidUpdate(_: unknown, prevState: ICardListState): void {
     if (prevState.currentPage !== this.state.currentPage) {
-      void this.fetchData(this.state.currentPage);
+      void this.fetchData(this.state.currentPage, this.state.query);
     }
   }
 
-  fetchData = async (page: number): Promise<void> => {
+  componentWillUnmount(): void {
+    this.unsubscribe?.();
+  }
+
+  fetchData = async (page: number, query: string): Promise<void> => {
     this.setState({ loading: true });
     try {
-      const data: TApiResponse = await getCharacters(page);
+      const data: TApiResponse = await getCharacters(page, query);
       this.setState({
         characters: data.results,
         totalPages: data.info.pages,
@@ -43,7 +55,7 @@ class CardList extends React.Component<unknown, IState> {
       });
     } catch (error) {
       console.error('error get data', error);
-      this.setState({ loading: false });
+      this.setState({ characters: [], totalPages: 0, loading: false });
     }
   };
 
@@ -53,16 +65,23 @@ class CardList extends React.Component<unknown, IState> {
     return (
       <div className={styles.wrapper}>
         {loading && <Loader />}
+        {!loading && characters.length === 0 && <EmptyList />}
         <div className={styles.inner}>
-          {characters.map((char: TCharacter) => (
-            <Card key={char.id} {...char} />
-          ))}
+          {characters.map(
+            (char: TCharacter): JSX.Element => (
+              <Card key={char.id} {...char} />
+            )
+          )}
         </div>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page: number) => this.setState({ currentPage: page })}
-        />
+        {!loading && characters.length !== 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page: number): void =>
+              this.setState({ currentPage: page })
+            }
+          />
+        )}
       </div>
     );
   }
