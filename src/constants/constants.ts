@@ -4,7 +4,7 @@ export const BUTTON_LABELS = {
 };
 
 export const PLACEHOLDERS = {
-  SEARCH: 'search...',
+  SEARCH: 'Rick Sanchez',
 };
 
 export const CHAR = {
@@ -15,3 +15,11 @@ export const CHAR = {
 
 export const BASE_LIMIT_VISIBLE_PAGINATION = 3;
 export const ELLIPSIS = '.';
+export const API_URL = 'https://rickandmortyapi.com/api/character?page=';
+export const EMPTY_LIST = {
+  TEXT: 'Please enter a different Char name and click "Search"',
+};
+
+export const LOCALSTORAGE_KEYS = {
+  SEARCH_QUERY: 'search_query',
+};
