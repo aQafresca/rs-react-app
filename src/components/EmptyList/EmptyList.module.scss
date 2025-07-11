@@ -1,0 +1,19 @@
+@use '@assets/styles/helpers/mixins' as *;
+@use '@assets/styles/variables' as *;
+
+$c-bg: $c-link-hover;
+
+.empty {
+  &__wrapper {
+    position: relative;
+    width: 100%;
+    height: 70svh;
+    background-color: $c-bg;
+  }
+
+  &__text {
+    @include abs-center;
+
+    text-align: center;
+  }
+}
