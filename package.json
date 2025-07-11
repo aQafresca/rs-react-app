@@ -12,9 +12,7 @@
     "format": "prettier . --check && npx stylelint ./src/**/*.scss",
     "format:fix": "prettier . --write  && npx stylelint ./src/**/*.scss --fix",
     "preview": "vite preview",
-    "prepare": "husky",
-    "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^19.1.0",
