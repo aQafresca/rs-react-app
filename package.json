@@ -12,7 +12,9 @@
     "format": "prettier . --check && npx stylelint ./src/**/*.scss",
     "format:fix": "prettier . --write  && npx stylelint ./src/**/*.scss --fix",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -24,10 +26,13 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.29.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^24.0.10",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
+    "@vitest/coverage-v8": "^3.2.4",
     "clsx": "^2.1.1",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
@@ -40,6 +45,7 @@
     "eslint-plugin-react-x": "^1.52.2",
     "globals": "^16.2.0",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "lint-staged": "^16.1.2",
     "prettier": "3.6.2",
     "sass": "^1.89.2",
@@ -50,6 +56,7 @@
     "stylelint-scss": "^6.12.1",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
-    "vite": "^7.0.0"
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4"
   }
 }
