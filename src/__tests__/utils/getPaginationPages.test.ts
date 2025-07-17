@@ -4,7 +4,7 @@ import { ELLIPSIS } from '@/constants/constants.ts';
 import { BASE_LIMIT_VISIBLE_PAGINATION } from '@/constants/constants.ts';
 
 describe('getPaginationPages', (): void => {
-  it('Should return all pages when totalPages is less than or equal to maxVisible', () => {
+  it('Should return all pages when totalPages is less than or equal to maxVisible', (): void => {
     expect(getPaginationPages(1, 1, BASE_LIMIT_VISIBLE_PAGINATION)).toEqual([
       1,
     ]);

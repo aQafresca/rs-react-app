@@ -2,20 +2,20 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import InputElement from '@components/Input/Input.tsx';
 
-describe('InputElement for character name input', () => {
-  it('renders input with placeholder "Character Name"', () => {
+describe('InputElement for character name input', (): void => {
+  it('renders input with placeholder "Character Name"', (): void => {
     render(<InputElement id="charName" placeholder="Character Name" />);
     const input = screen.getByPlaceholderText('Character Name');
     expect(input).toBeInTheDocument();
   });
 
-  it('renders label when provided and associates it with input', () => {
+  it('renders label when provided and associates it with input', (): void => {
     render(<InputElement id="charName" label="Character Name" />);
     const input = screen.getByLabelText('Character Name');
     expect(input).toBeInTheDocument();
   });
 
-  it('calls onChange when input value changes', () => {
+  it('calls onChange when input value changes', (): void => {
     const onChange = vi.fn();
     render(<InputElement placeholder="Character Name" onChange={onChange} />);
     const input = screen.getByPlaceholderText('Character Name');

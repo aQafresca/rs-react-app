@@ -4,9 +4,9 @@ import * as api from '@/core/api/getCharacters.ts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { searchStore } from '@/core/store/searchStore.ts';
 import { screen, render, waitFor } from '@testing-library/react';
+import { mockData } from '@/constants/tests.ts';
 
 vi.mock('@components/CardList/Card/Card.tsx', () => ({
-  // Этот мок остается, так как он использует `name` пропс
   default: ({ name }: { name: string }) =>
     createMockComponent('mock-card', name)({}),
 }));
@@ -33,24 +33,7 @@ describe('CardList', (): void => {
   });
 
   it('displays cards after loading', async (): Promise<void> => {
-    vi.spyOn(api, 'getCharacters').mockResolvedValue({
-      info: {
-        pages: 1,
-        count: 1,
-        next: null,
-        prev: null,
-      },
-      results: [
-        {
-          id: 1,
-          name: 'Rick Sanchez',
-          status: 'Alive',
-          species: 'Human',
-          gender: 'Male',
-          image: 'https://rick.com/image.jpg',
-        },
-      ],
-    });
+    vi.spyOn(api, 'getCharacters').mockResolvedValue(mockData);
 
     render(<CardList />);
 

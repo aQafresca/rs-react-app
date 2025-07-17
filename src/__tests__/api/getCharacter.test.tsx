@@ -2,25 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getCharacters } from '@/core/api/getCharacters.ts';
 import { API_URL } from '@/constants/constants';
 import { ApiResponseSchema } from '@/shema/characterShema';
-
-const mockData = {
-  info: {
-    count: 1,
-    pages: 1,
-    next: null,
-    prev: null,
-  },
-  results: [
-    {
-      id: 1,
-      name: 'Rick Sanchez',
-      status: 'Alive',
-      species: 'Human',
-      gender: 'Male',
-      image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-    },
-  ],
-};
+import { mockData } from '@/constants/tests';
 
 describe('getCharacters', (): void => {
   beforeEach((): void => {
