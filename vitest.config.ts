@@ -44,6 +44,14 @@ export default defineConfig({
           new URL('./src/components', import.meta.url)
         ),
       },
+      {
+        find: '@core',
+        replacement: fileURLToPath(new URL('./src/core', import.meta.url)),
+      },
+      {
+        find: '@utils',
+        replacement: fileURLToPath(new URL('./src/utils', import.meta.url)),
+      },
     ],
   },
 });
