@@ -6,7 +6,7 @@ import Card from '@components/CardList/Card/Card.tsx';
 import type { TApiResponse, TCharacter } from '@/shema/characterShema.ts';
 import Loader from '@components/Loader/Loader.tsx';
 import Pagination from '@components/Pagination/Pagination.tsx';
-import { searchStore } from '@/core/store/serchStore.ts';
+import { searchStore } from '@/core/store/searchStore.ts';
 import EmptyList from '@components/EmptyList/EmptyList.tsx';
 import type { ICardListState } from '@/interface/interface.ts';
 

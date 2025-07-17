@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, vi, it, expect, afterEach } from 'vitest';
 import * as React from 'react';
 import { createMockComponent } from '@/__tests__/__mocks__/createMockComponent.tsx';
+import App from '@/App';
 
 let shouldErrorBoundaryThrow = false;
 
@@ -32,12 +33,10 @@ vi.mock('@/components/ErrorBoundary/ErrorBoundary.tsx', () => ({
     ),
 }));
 
-import App from '@/App';
-
 describe('App Component (simplified)', (): void => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
-  afterEach(() => {
+  afterEach((): void => {
     consoleErrorSpy?.mockRestore();
     shouldErrorBoundaryThrow = false;
   });
