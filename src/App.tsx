@@ -1,21 +1,12 @@
-import Header from '@components/Header/Header.tsx';
-import Loader from '@components/Loader/Loader.tsx';
-import ErrorBoundary from '@components/ErrorBoundary/ErrorBoundary.tsx';
-import { Suspense, type JSX } from 'react';
-import CardList from '@components/CardList/CardList.tsx';
+import { type JSX } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from '@/routes/Routes.tsx';
 
 function App(): JSX.Element {
   return (
-    <ErrorBoundary>
-      <>
-        <Header />
-        <main className="container">
-          <Suspense fallback={<Loader />}>
-            <CardList />
-          </Suspense>
-        </main>
-      </>
-    </ErrorBoundary>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
 
