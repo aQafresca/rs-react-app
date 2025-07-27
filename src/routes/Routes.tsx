@@ -13,11 +13,11 @@ const AppRoutes = () => {
     <Routes>
       <Route path={ROUTES.HOME} element={<Layout />}>
         <Route path={ROUTES.HOME} element={<HomePage />}>
-          <Route path={':id'} element={<CardDetailPanel />} />
+          <Route path=":id" element={<CardDetailPanel />} />
         </Route>
         <Route path={ROUTES.ABOUT} element={<AboutPage />} />
-        <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
       </Route>
+      <Route path={'*'} element={<NotFoundPage />} />
     </Routes>
   );
 };

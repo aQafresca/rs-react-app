@@ -37,7 +37,7 @@ export const ROUTES = {
   HOME: '/',
   ABOUT: '/about',
   CHARACTERS: '/characters',
-  NOT_FOUND: '*',
+  NOT_FOUND: '404',
 };
 
 export const menuLinks: { route: string; caption: string }[] = [

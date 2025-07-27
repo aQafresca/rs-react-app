@@ -8,29 +8,30 @@ import CardDetail from '@components/CardList/Card/Detail/Detail.tsx';
 import Button from '@components/Button/Button.tsx';
 import { BUTTON_LABELS, ROUTES } from '@/constants/constants.ts';
 import { type JSX } from 'react';
+import { Navigate } from 'react-router-dom';
 
 const CardDetailPanel = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [character, setCharacter] = useState<TCharacter | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect((): void => {
-    setLoading(true);
-    setError(null);
-    if (!id) {
-      setError('Character ID not found.');
+    if (!id || isNaN(Number(id))) {
+      setError(true);
       setLoading(false);
       return;
     }
+    setLoading(true);
+    setError(false);
     const fetchDetailPanelData = async (): Promise<void> => {
       try {
         const data = await getCharacterById(Number(id));
         setCharacter(data);
       } catch (error) {
         console.error('Error fetching character details:', error);
-        setError('Failed to load character details.');
+        setError(true);
         setCharacter(null);
       } finally {
         setLoading(false);
@@ -55,14 +56,7 @@ const CardDetailPanel = (): JSX.Element => {
   }
 
   if (error) {
-    return (
-      <div className={styles.detail__error}>
-        <p>{error}</p>
-        <Button type={'button'} onClick={handleClose}>
-          {BUTTON_LABELS.CLOSE}
-        </Button>
-      </div>
-    );
+    return <Navigate to={ROUTES.NOT_FOUND} replace />;
   }
 
   return (
