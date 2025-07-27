@@ -1,10 +1,14 @@
+@use '@assets/styles/helpers/media' as *;
 @use '@assets/styles/helpers/functions' as *;
 @use '@assets/styles/variables' as *;
 
 $c-bg-card: $c-link-main;
 $c-border-card: $c-primary-300;
+$c-hover: $c-primary-300;
 
 .card {
+  cursor: pointer;
+
   overflow: hidden;
 
   width: rem(300);
@@ -13,6 +17,12 @@ $c-border-card: $c-primary-300;
   border-radius: rem(10);
 
   background: transparent;
+
+  @include hover {
+    transform: scale(1.03);
+    box-shadow: rem(8) rem(8) rem(24) 0 $c-hover;
+    transition: $transition-duration;
+  }
 
   &__item {
     display: flex;

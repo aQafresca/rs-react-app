@@ -1,11 +1,21 @@
 import styles from './Card.module.scss';
 import type { TCharacter } from '@/shema/characterShema.ts';
 import { CHAR } from '@/constants/constants.ts';
-import type { JSX } from 'react';
+import { type JSX } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import * as React from 'react';
 
 const Card = (props: TCharacter): JSX.Element => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClick = (event: React.MouseEvent): void => {
+    event.stopPropagation();
+    void navigate(`/${props.id}${location.search}`);
+  };
+
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={handleClick} role={'button'}>
       <div>
         <img className={styles.card__img} src={props.image} alt={props.name} />
       </div>
