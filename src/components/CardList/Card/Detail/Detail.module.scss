@@ -1,0 +1,31 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/variables' as *;
+
+.detail {
+  width: rem(350);
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: rem(30);
+  }
+
+  &__item {
+    display: flex;
+    gap: rem(20);
+    align-items: center;
+
+    &:first-child {
+      padding-bottom: rem(20);
+    }
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+  &__label {
+    font-size: rem(20);
+    font-weight: bold;
+  }
+}

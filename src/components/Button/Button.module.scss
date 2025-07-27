@@ -1,0 +1,53 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/helpers/mixins' as *;
+@use '@assets/styles/helpers/media' as *;
+@use '@assets/styles/variables' as *;
+
+$c-bg-primary: $c-bg-main;
+$c-text-primary: $c-light-main;
+$c-bg-secondary: $c-primary-300;
+$c-text-secondary: $c-light-secondary;
+
+.button {
+  @include flex-center;
+
+  height: rem(38);
+  border-radius: rem(5);
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+.primary {
+  color: $c-text-primary;
+  background-color: $c-bg-primary;
+
+  @include hover {
+    color: $c-bg-primary;
+    background-color: $c-text-primary;
+  }
+}
+
+.secondary {
+  color: $c-text-secondary;
+  background-color: $c-bg-secondary;
+
+  @include hover {
+    color: $c-bg-secondary;
+    background-color: $c-text-secondary;
+  }
+}
+
+.x-small {
+  max-width: rem(20);
+}
+
+.small {
+  max-width: rem(60);
+}
+
+.medium {
+  max-width: rem(100);
+}

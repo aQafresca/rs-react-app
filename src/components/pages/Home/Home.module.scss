@@ -1,0 +1,17 @@
+@use '@assets/styles/helpers/media' as *;
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/variables' as *;
+
+.home {
+  &__content {
+    display: flex;
+  }
+
+  &__shrunk {
+    flex-basis: 70%;
+
+    @include mobile {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/helpers/mixins' as *;
+@use '@assets/styles/variables' as *;
+
+$c-link: $c-first-comet;
+
+.header {
+  &__nav {
+    @include flex-center;
+
+    gap: rem(20);
+    padding: rem(20) 0;
+  }
+
+  &__link {
+    color: $c-link;
+    text-decoration: none;
+  }
+}
