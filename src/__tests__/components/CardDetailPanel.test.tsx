@@ -21,7 +21,7 @@ vi.mock('@/core/api/getCharactersById.ts', () => ({
   getCharacterById: vi.fn(),
 }));
 
-vi.mock('@components/CardList/CardDetail/Detail.tsx', () => ({
+vi.mock('@components/CardList/Card/Detail/Detail.tsx', () => ({
   default: () => <div>MockCardDetail</div>,
 }));
 
