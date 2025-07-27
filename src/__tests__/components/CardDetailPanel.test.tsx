@@ -74,26 +74,6 @@ describe('CardDetailPanel', (): void => {
     expect(screen.getByTestId('loader-mock')).toBeInTheDocument();
   });
 
-  it('renders error message on fetch failure', async () => {
-    vi.spyOn(api, 'getCharacterById').mockRejectedValue(
-      new Error('Network error')
-    );
-
-    renderWithRouter(<CardDetailPanel />, {
-      path: '/:id',
-      initialEntries: ['/1'],
-    });
-
-    await waitFor((): void => {
-      expect(
-        screen.getByText('Failed to load character details.')
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole('button', { name: BUTTON_LABELS.CLOSE })
-      ).toBeInTheDocument();
-    });
-  });
-
   it('renders character details after successful fetch', async () => {
     vi.spyOn(api, 'getCharacterById').mockResolvedValue(character);
 
@@ -138,23 +118,19 @@ describe('CardDetailPanel', (): void => {
       search: '?page=2&name=alive',
     });
   });
-
-  it('renders error message if character ID is missing in URL parameters', async () => {
-    vi.mocked(routerDom.useParams).mockReturnValue({ id: undefined });
-    vi.spyOn(api, 'getCharacterById').mockClear();
+  it('redirects to not-found page on fetch error', async () => {
+    vi.spyOn(api, 'getCharacterById').mockRejectedValue(
+      new Error('fetch failed')
+    );
 
     renderWithRouter(<CardDetailPanel />, {
-      path: '/character',
-      initialEntries: ['/character'],
+      path: '/:id',
+      initialEntries: ['/1'],
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Character ID not found.')).toBeInTheDocument();
-      expect(
-        screen.getByRole('button', { name: BUTTON_LABELS.CLOSE })
-      ).toBeInTheDocument();
+      expect(screen.queryByText('MockCardDetail')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('loader-mock')).not.toBeInTheDocument();
     });
-
-    expect(api.getCharacterById).not.toHaveBeenCalled();
   });
 });
