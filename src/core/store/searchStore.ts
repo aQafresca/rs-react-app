@@ -1,26 +1,26 @@
 type TCallback = (query: string) => void;
 
-class SearchStore {
-  private query = '';
-  private listeners: TCallback[] = [];
+const createSearchStore = () => {
+  let query = '';
+  const listeners: TCallback[] = [];
 
-  setQuery(newQuery: string): void {
-    this.query = newQuery;
-    this.listeners.forEach((callback: TCallback): void => callback(newQuery));
-  }
+  return {
+    setQuery(newQuery: string): void {
+      query = newQuery;
+      listeners.forEach((callback: TCallback): void => callback(newQuery));
+    },
 
-  subscribe(callback: TCallback): () => void {
-    this.listeners.push(callback);
-    return (): void => {
-      this.listeners = this.listeners.filter(
-        (fn: TCallback): boolean => fn != callback
-      );
-    };
-  }
+    subscribe(callback: TCallback): () => void {
+      listeners.push(callback);
+      return (): void => {
+        listeners.splice(listeners.indexOf(callback), 1);
+      };
+    },
 
-  getQuery(): string {
-    return this.query;
-  }
-}
+    getQuery(): string {
+      return query;
+    },
+  };
+};
 
-export const searchStore = new SearchStore();
+export const searchStore = createSearchStore();
