@@ -1,7 +1,21 @@
 import Card from '@components/CardList/Card/Card.tsx';
 import type { TCharacter } from '@/shema/characterShema.ts';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+
+const mockNavigate = vi.fn();
+
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom'
+    );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    useLocation: () => ({ search: '?page=2' }),
+  };
+});
 
 describe('Card component', (): void => {
   const mockCharacter: TCharacter = {
@@ -11,6 +25,14 @@ describe('Card component', (): void => {
     species: 'Human',
     gender: 'Male',
     image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+    origin: {
+      name: 'Citadel of Ricks',
+      url: 'https://rickandmortyapi.com/api/location/3 ',
+    },
+    location: {
+      name: 'Earth (C-137)',
+      url: 'https://rickandmortyapi.com/api/location/1',
+    },
   };
   it('renders character info correctly', (): void => {
     render(<Card {...mockCharacter} />);
@@ -27,5 +49,11 @@ describe('Card component', (): void => {
         expect(screen.getByText(text)).toBeInTheDocument();
       }
     );
+  });
+  it('calls navigate on card click', () => {
+    render(<Card {...mockCharacter} />);
+    screen.getByRole('button').click();
+
+    expect(mockNavigate).toHaveBeenCalledWith('/1?page=2');
   });
 });
