@@ -7,6 +7,14 @@ export const CharacterSchema = z.object({
   species: z.string(),
   gender: z.string(),
   image: z.string(),
+  origin: z.object({
+    name: z.string(),
+    url: z.string(),
+  }),
+  location: z.object({
+    name: z.string(),
+    url: z.string(),
+  }),
 });
 
 export const InfoSchema = z.object({
