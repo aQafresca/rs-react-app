@@ -8,7 +8,7 @@ export const getCharacters = async (
   page = 1,
   query = ''
 ): Promise<TApiResponse> => {
-  const url = new URL(`${API_URL}${page}`);
+  const url = new URL(`${API_URL.PAGE}${page}`);
 
   if (query.trim()) {
     url.searchParams.append('name', query.trim());
