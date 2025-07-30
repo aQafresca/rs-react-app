@@ -1,9 +1,6 @@
-import type { TCharacter } from '@/shema/characterShema.ts';
+export type Theme = 'dark' | 'light';
 
-export interface ICardListState {
-  loading: boolean;
-  characters: TCharacter[];
-  currentPage: number;
-  totalPages: number;
-  query: string;
+export interface IThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
 }
