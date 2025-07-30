@@ -1,0 +1,73 @@
+@use 'variables' as *;
+@use 'helpers/mixins' as *;
+@use 'helpers/functions' as *;
+@use 'helpers/media' as *;
+
+$c-font: $c-light-main;
+$c-background: $c-bg-dark;
+$c-background-line: $c-primary-005-dark;
+$c-link: $c-link-main;
+$c-link-hover: $c-link-hover;
+$f-family: $f-family-base;
+
+body {
+  @include fluid-text(18, 14);
+
+  font-family: $f-family;
+  color: $c-font;
+
+  background-color: $c-background;
+  background-image:
+    linear-gradient($c-background-line rem(0.5), transparent rem(1)),
+    linear-gradient(90deg, $c-background-line rem(0.5), transparent rem(1));
+  background-attachment: fixed;
+  background-size: rem(50) rem(50);
+
+  transition:
+    background-color $transition-duration,
+    color $transition-duration;
+}
+
+h3 {
+  @include fluid-text(30, 30);
+}
+
+a,
+button,
+input,
+select,
+svg * {
+  transition: $transition-duration;
+}
+
+a {
+  color: $c-link;
+
+  @include hover {
+    color: $c-link-hover;
+  }
+}
+
+html.light {
+  body {
+    color: $c-dark-main;
+    background-color: $c-bg-light;
+    background-image:
+      linear-gradient($c-primary-005-light rem(0.5), transparent rem(1)),
+      linear-gradient(90deg, $c-primary-005-light rem(0.5), transparent rem(1));
+  }
+
+  a {
+    color: black;
+
+    @include hover {
+      color: #504d4d;
+    }
+  }
+}
+
+:focus-visible {
+  outline: rem(2) dashed;
+  outline-offset: rem(4);
+  transition-duration: 0s !important;
+}

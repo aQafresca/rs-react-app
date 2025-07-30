@@ -1,0 +1,10 @@
+@use '@assets/styles/helpers/mixins' as *;
+
+.error {
+  @include abs-center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}

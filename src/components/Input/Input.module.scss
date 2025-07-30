@@ -1,0 +1,19 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/variables' as *;
+
+$c-bg-input: $c-light-secondary;
+
+.input {
+  width: 100%;
+  height: rem(38);
+  padding: 0 rem(10);
+  border-radius: rem(10);
+
+  background-color: $c-bg-input;
+  outline: none;
+
+  &__wrapper {
+    width: 100%;
+    max-width: rem(600);
+  }
+}

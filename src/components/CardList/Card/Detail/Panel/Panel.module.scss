@@ -1,0 +1,11 @@
+@use '@assets/styles/helpers/functions' as *;
+
+.detail__panel {
+  display: flex;
+  flex-direction: column;
+  gap: rem(40);
+}
+
+.detail__button {
+  align-self: flex-end;
+}

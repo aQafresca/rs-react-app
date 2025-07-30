@@ -1,0 +1,27 @@
+@use '@assets/styles/helpers/functions' as *;
+@use '@assets/styles/helpers/mixins' as *;
+@use '@assets/styles/variables' as *;
+
+$c-link: $c-first-comet;
+
+.header {
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__nav {
+    display: flex;
+    flex: 1;
+    gap: rem(20);
+    justify-content: center;
+
+    padding: rem(20) 0;
+  }
+
+  &__link {
+    color: $c-link;
+    text-decoration: none;
+  }
+}

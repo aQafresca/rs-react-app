@@ -1,0 +1,16 @@
+@use '@assets/styles/helpers/mixins' as *;
+@use '@assets/styles/variables' as *;
+
+.empty {
+  &__wrapper {
+    position: relative;
+    width: 100%;
+    height: 70svh;
+  }
+
+  &__text {
+    @include abs-center;
+
+    text-align: center;
+  }
+}
