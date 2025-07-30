@@ -3,7 +3,7 @@
 @use '@assets/styles/helpers/media' as *;
 @use '@assets/styles/variables' as *;
 
-$c-bg-primary: $c-bg-main;
+$c-bg-primary: $c-bg-dark;
 $c-text-primary: $c-light-main;
 $c-bg-secondary: $c-primary-300;
 $c-text-secondary: $c-light-secondary;

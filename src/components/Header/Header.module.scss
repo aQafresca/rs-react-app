@@ -5,10 +5,18 @@
 $c-link: $c-first-comet;
 
 .header {
-  &__nav {
-    @include flex-center;
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
+  &__nav {
+    display: flex;
+    flex: 1;
     gap: rem(20);
+    justify-content: center;
+
     padding: rem(20) 0;
   }
 
