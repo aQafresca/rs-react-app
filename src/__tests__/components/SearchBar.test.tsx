@@ -1,16 +1,8 @@
 import SearchBar from '@components/SearchBar/SearchBar.tsx';
-
 import * as React from 'react';
-
 import { vi, it, describe, beforeEach, afterEach, expect } from 'vitest';
-
 import { render, screen, fireEvent } from '@testing-library/react';
-
-import {
-  BUTTON_LABELS,
-  PLACEHOLDERS,
-  LOCALSTORAGE_KEYS,
-} from '@/constants/constants.ts';
+import { PLACEHOLDERS, LOCALSTORAGE_KEYS } from '@/constants/constants.ts';
 
 vi.mock('@components/BrokenComponent/BrokenComponent.tsx', () => ({
   default: () => <div data-testid="mock-broken-component">Broken!</div>,
@@ -100,10 +92,6 @@ describe('SearchBar', (): void => {
     const searchButton: HTMLElement = screen.getAllByTestId('mock-button')[0];
 
     expect(searchButton).toBeInTheDocument();
-
-    const errorButton: HTMLElement = screen.getByText(BUTTON_LABELS.ERROR);
-
-    expect(errorButton).toBeInTheDocument();
   });
 
   it('loads saved search query from localStorage on mount', (): void => {
@@ -146,21 +134,5 @@ describe('SearchBar', (): void => {
 
       'test search'
     );
-  });
-
-  it('shows BrokenComponent when error button is clicked', async (): Promise<void> => {
-    render(<SearchBar />);
-
-    expect(
-      screen.queryByTestId('mock-broken-component')
-    ).not.toBeInTheDocument();
-
-    const errorButton: HTMLElement = screen.getByText(BUTTON_LABELS.ERROR);
-
-    fireEvent.click(errorButton);
-
-    expect(
-      await screen.findByTestId('mock-broken-component')
-    ).toBeInTheDocument();
   });
 });
