@@ -3,16 +3,24 @@ import type { TCharacter } from '@/shema/characterShema.ts';
 import { CHAR } from '@/constants/constants.ts';
 import { type JSX } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import * as React from 'react';
+import { useCardStore } from '@/core/store/useCardStore.ts';
 
 const Card = (props: TCharacter): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleClick = (event: React.MouseEvent): void => {
-    event.stopPropagation();
+  const selected = useCardStore((state) => state.selected);
+  const toggle = useCardStore((state) => state.toggle);
+
+  const handleClick = (): void => {
     void navigate(`/${props.id}${location.search}`);
   };
+
+  const handleCheckboxChange = (): void => {
+    toggle(props);
+  };
+
+  const isChecked = Boolean(selected[props.id]);
 
   return (
     <div className={styles.card} onClick={handleClick} role={'button'}>
@@ -35,6 +43,13 @@ const Card = (props: TCharacter): JSX.Element => {
             <span className={styles.card__value}>{props.species}</span>
           </li>
         </ul>
+        <input
+          className={styles.card__checkbox}
+          type={'checkbox'}
+          onClick={(e): void => e.stopPropagation()}
+          onChange={handleCheckboxChange}
+          checked={isChecked}
+        />
       </div>
     </div>
   );

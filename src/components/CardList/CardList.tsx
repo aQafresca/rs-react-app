@@ -8,6 +8,8 @@ import Pagination from '@components/Pagination/Pagination.tsx';
 import { searchStore } from '@/core/store/searchStore.ts';
 import EmptyList from '@components/EmptyList/EmptyList.tsx';
 import { useSearchParams } from 'react-router-dom';
+import { useCardStore } from '@/core/store/useCardStore.ts';
+import Flyout from '@components/Flyout/Flyout.tsx';
 
 const CardList = (): JSX.Element => {
   const [loading, setLoading] = useState(true);
@@ -15,6 +17,7 @@ const CardList = (): JSX.Element => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [totalPages, setTotalPages] = useState(0);
 
+  const selected = useCardStore((state) => state.selected);
   const currentPage = Number(searchParams.get('page')) || 1;
   const query = searchParams.get('name') ?? '';
 
@@ -102,6 +105,7 @@ const CardList = (): JSX.Element => {
           onPageChange={handlePageChange}
         />
       )}
+      {Object.keys(selected).length > 0 && <Flyout />}
     </div>
   );
 };
