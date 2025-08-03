@@ -1,7 +1,7 @@
 @use '@assets/styles/helpers/functions' as *;
 @use '@assets/styles/variables' as *;
 
-$c-bg-input: $c-light-secondary;
+$c-bg-input: var(--c-secondary);
 
 .input {
   width: 100%;

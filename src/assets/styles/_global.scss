@@ -3,11 +3,11 @@
 @use 'helpers/functions' as *;
 @use 'helpers/media' as *;
 
-$c-font: $c-light-main;
-$c-background: $c-bg-dark;
+$c-font: var(--c-main);
+$c-background: var(--c-bg);
 $c-background-line: $c-primary-005-dark;
-$c-link: $c-link-main;
-$c-link-hover: $c-link-hover;
+$c-link: var(--c-link);
+$c-link-hover: var(--c-link-hover);
 $f-family: $f-family-base;
 
 body {
@@ -45,24 +45,6 @@ a {
 
   @include hover {
     color: $c-link-hover;
-  }
-}
-
-html.light {
-  body {
-    color: $c-dark-main;
-    background-color: $c-bg-light;
-    background-image:
-      linear-gradient($c-primary-005-light rem(0.5), transparent rem(1)),
-      linear-gradient(90deg, $c-primary-005-light rem(0.5), transparent rem(1));
-  }
-
-  a {
-    color: black;
-
-    @include hover {
-      color: #504d4d;
-    }
   }
 }
 
