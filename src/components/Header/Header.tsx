@@ -26,11 +26,9 @@ const Header = (): JSX.Element => {
             )
           )}
         </nav>
-        <div>
-          <Button className={styles.header__button} onClick={toggleTheme}>
-            <Icon />
-          </Button>
-        </div>
+        <Button className={styles.header__button} onClick={toggleTheme}>
+          <Icon />
+        </Button>
       </div>
     </div>
   );

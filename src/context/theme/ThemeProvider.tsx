@@ -23,13 +23,13 @@ export const ThemeProvider = ({
         ? savedTheme
         : 'dark';
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return 'dark';
     }
   });
 
   useEffect(() => {
-    document.documentElement.className = theme;
+    document.documentElement.setAttribute('data-theme', theme);
     try {
       localStorage.setItem('theme', theme);
     } catch (error) {
