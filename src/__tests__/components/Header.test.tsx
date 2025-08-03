@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import Header from '@/components/Header/Header.tsx';
@@ -49,13 +49,16 @@ describe('Header Component', () => {
     expect(button.innerHTML).not.toBe(''); // проверка, что иконка есть
   });
 
-  it('toggles theme when button is clicked', (): void => {
+  it('toggles theme when button is clicked', async (): Promise<void> => {
     const button = screen.getByRole('button');
-    const initialClass = document.documentElement.className;
+    const initialTheme = document.documentElement.getAttribute('data-theme');
 
     fireEvent.click(button);
 
-    const newClass = document.documentElement.className;
-    expect(newClass).not.toBe(initialClass);
+    await waitFor(() => {
+      const newTheme = document.documentElement.getAttribute('data-theme');
+      expect(newTheme).not.toBe(initialTheme);
+      expect(newTheme).not.toBeNull();
+    });
   });
 });
