@@ -10,7 +10,7 @@ import {
   PLACEHOLDERS,
   LOCALSTORAGE_KEYS,
 } from '@/constants/constants.ts';
-import { searchStore } from '@/core/store/serchStore.ts';
+import { searchStore } from '@/core/store/searchStore.ts';
 
 class Header extends Component {
   state: { showErrorComponent: boolean; inputValue: string } = {
