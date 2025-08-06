@@ -20,9 +20,11 @@
     "test:coverage": "node --max-old-space-size=2048 ./node_modules/vitest/vitest.mjs run --coverage"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.84.1",
     "file-saver": "^2.0.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.7.1",
     "zod": "^3.25.76",
