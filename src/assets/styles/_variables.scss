@@ -1,18 +1,37 @@
-@use 'helpers/functions' as *;
-
-$c-light-main: #eef8ce;
 $c-light-secondary: #e3e78d;
 $c-dark-main: #20211c;
 $c-dark-secondary: #0f170f;
-$c-bg-main: #1b1b1b;
+$c-bg-dark: #1b1b1b;
+$c-bg-light: #a2a2a4;
 $c-link-hover: #e0ab26;
 $c-link-main: rgba($c-link-hover, 0.6);
 $c-primary-300: rgb(139 134 162 / 40%);
-$c-primary-005: rgb(255 255 255 / 5%);
+$c-primary-005-dark: rgb(255 255 255 / 5%);
+$c-primary-005-light: rgb(0 0 0 / 5%);
 $c-first-comet: gold;
 $c-second-comet: lime;
-$container-width: #{rem(1280)};
-$container-padding-x: #{rem(20)};
+$container-width: 1280px;
+$container-padding-x: 20px;
 $transition-duration: 0.2s;
 $f-family-base: 'Roboto', 'sans-serif';
 $f-family-accent: 'Inter', 'sans-serif';
+
+:root {
+  --c-main: #eef8ce;
+  --c-secondary: #e3e78d;
+  --c-bg: #1b1b1b;
+  --c-border: rgb(139 134 162 / 40%);
+  --c-primary-005: rgb(255 255 255 / 5%);
+  --c-link: rgb(224 171 38 / 69%);
+  --c-link-hover: #e0ab26;
+}
+
+[data-theme='light'] {
+  --c-main: #20211c;
+  --c-secondary: #bebe05;
+  --c-bg: #a2a2a4;
+  --c-border: rgb(28 27 27 / 40%);
+  --c-primary-005: rgb(0 0 0 / 5%);
+  --c-link: rgb(152 61 1);
+  --c-link-hover: #d00707;
+}

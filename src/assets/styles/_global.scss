@@ -3,11 +3,11 @@
 @use 'helpers/functions' as *;
 @use 'helpers/media' as *;
 
-$c-font: $c-light-main;
-$c-background: $c-bg-main;
-$c-background-line: $c-primary-005;
-$c-link: $c-link-main;
-$c-link-hover: $c-link-hover;
+$c-font: var(--c-main);
+$c-background: var(--c-bg);
+$c-background-line: $c-primary-005-dark;
+$c-link: var(--c-link);
+$c-link-hover: var(--c-link-hover);
 $f-family: $f-family-base;
 
 body {
@@ -22,6 +22,10 @@ body {
     linear-gradient(90deg, $c-background-line rem(0.5), transparent rem(1));
   background-attachment: fixed;
   background-size: rem(50) rem(50);
+
+  transition:
+    background-color $transition-duration,
+    color $transition-duration;
 }
 
 h3 {

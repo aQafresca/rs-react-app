@@ -3,6 +3,8 @@ export const BUTTON_LABELS = {
   RELOAD: 'Reload',
   CLOSE: 'Close',
   EXIT: 'X',
+  CANCEL: 'Cancel',
+  DOWNLOAD: 'Download',
 };
 
 export const PLACEHOLDERS = {
@@ -48,3 +50,11 @@ export const menuLinks: { route: string; caption: string }[] = [
 export const NOT_FOUND = {
   ERROR: 'error 404',
 };
+
+export const HEADER_CSV: string[] = [
+  'ID',
+  'Name',
+  'Status',
+  'Species',
+  'Gender',
+];
