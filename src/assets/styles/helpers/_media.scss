@@ -20,3 +20,9 @@ $mobile-s: 320.98;
     }
   }
 }
+
+@mixin mobile {
+  @media (width <= rem($mobile)) {
+    @content;
+  }
+}

@@ -1,90 +1,109 @@
 import styles from './CardList.module.scss';
-import * as React from 'react';
-import type { JSX } from 'react';
+import { type JSX, useCallback, useEffect, useState } from 'react';
 import { getCharacters } from '@/core/api/getCharacters.ts';
 import Card from '@components/CardList/Card/Card.tsx';
-import type { TApiResponse, TCharacter } from '@/shema/characterShema.ts';
+import type { TCharacter } from '@/shema/characterShema.ts';
 import Loader from '@components/Loader/Loader.tsx';
 import Pagination from '@components/Pagination/Pagination.tsx';
 import { searchStore } from '@/core/store/searchStore.ts';
 import EmptyList from '@components/EmptyList/EmptyList.tsx';
-import type { ICardListState } from '@/interface/interface.ts';
+import { useSearchParams } from 'react-router-dom';
 
-class CardList extends React.Component<unknown, ICardListState> {
-  state: ICardListState = {
-    loading: true,
-    characters: [],
-    currentPage: 1,
-    totalPages: 0,
-    query: '',
-  };
+const CardList = (): JSX.Element => {
+  const [loading, setLoading] = useState(true);
+  const [characters, setCharacters] = useState<TCharacter[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [totalPages, setTotalPages] = useState(0);
 
-  unsubscribe: (() => void) | null = null;
+  const currentPage = Number(searchParams.get('page')) || 1;
+  const query = searchParams.get('name') ?? '';
 
-  componentDidMount(): void {
-    const initQuery: string = searchStore.getQuery();
-    void this.fetchData(1, initQuery);
+  useEffect(() => {
+    const initialQueryInUrl = searchParams.get('name') ?? '';
 
-    this.unsubscribe = searchStore.subscribe((query): void => {
-      if (this.state.query !== query) {
-        this.setState({ query, currentPage: 1 }, (): void => {
-          void this.fetchData(1, query);
-        });
+    if (searchStore.getQuery() !== initialQueryInUrl) {
+      searchStore.setQuery(initialQueryInUrl);
+    }
+    const unsubscribe = searchStore.subscribe((newQueryFromStore: string) => {
+      const currentQueryInUrl = searchParams.get('name') ?? '';
+      if (newQueryFromStore !== currentQueryInUrl) {
+        setSearchParams(
+          (prev) => {
+            const newSearchParams = new URLSearchParams(prev);
+            if (newQueryFromStore.trim()) {
+              newSearchParams.set('name', newQueryFromStore);
+            } else {
+              newSearchParams.delete('name');
+            }
+            newSearchParams.delete('page');
+            return newSearchParams;
+          },
+          { replace: true }
+        );
       }
     });
-  }
+    return () => {
+      unsubscribe();
+    };
+  }, [searchParams, setSearchParams]);
 
-  componentDidUpdate(_: unknown, prevState: ICardListState): void {
-    if (prevState.currentPage !== this.state.currentPage) {
-      void this.fetchData(this.state.currentPage, this.state.query);
-    }
-  }
+  useEffect((): void => {
+    const fetchData = async (): Promise<void> => {
+      setLoading(true);
+      try {
+        const response = await getCharacters(currentPage, query);
+        setCharacters(response.results);
+        setTotalPages(response.info.pages);
+      } catch (error) {
+        console.error('Error fetching characters:', error);
+        setTotalPages(0);
+        setCharacters([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    void fetchData();
+  }, [query, currentPage]);
 
-  componentWillUnmount(): void {
-    this.unsubscribe?.();
-  }
+  const handlePageChange = useCallback(
+    (page: number): void => {
+      setSearchParams(
+        (prev): URLSearchParams => {
+          const newSearchParams = new URLSearchParams(prev);
+          if (page === 1) {
+            newSearchParams.delete('page');
+          } else {
+            newSearchParams.set('page', String(page));
+          }
+          return newSearchParams;
+        },
+        { replace: true }
+      );
+    },
+    [setSearchParams]
+  );
 
-  fetchData = async (page: number, query: string): Promise<void> => {
-    this.setState({ loading: true });
-    try {
-      const data: TApiResponse = await getCharacters(page, query);
-      this.setState({
-        characters: data.results,
-        totalPages: data.info.pages,
-        loading: false,
-      });
-    } catch (error) {
-      console.error('error get data', error);
-      this.setState({ characters: [], totalPages: 0, loading: false });
-    }
-  };
-
-  render(): JSX.Element {
-    const { loading, characters, currentPage, totalPages } = this.state;
-
-    return (
-      <div className={styles.wrapper}>
-        {loading && <Loader />}
-        {!loading && characters.length === 0 && <EmptyList />}
-        <div className={styles.inner}>
-          {characters.map(
-            (char: TCharacter): JSX.Element => (
-              <Card key={char.id} {...char} />
-            )
-          )}
-        </div>
-        {!loading && characters.length !== 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page: number): void =>
-              this.setState({ currentPage: page })
-            }
-          />
+  return (
+    <div className={styles.wrapper}>
+      {loading && <Loader />}
+      {!loading && characters.length === 0 && <EmptyList />}
+      <div className={styles.inner}>
+        {characters.map(
+          (char: TCharacter): JSX.Element => (
+            <Card key={char.id} {...char} />
+          )
         )}
       </div>
-    );
-  }
-}
+
+      {!loading && characters.length !== 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
+    </div>
+  );
+};
 
 export default CardList;

@@ -20,7 +20,7 @@ describe('getCharacters', (): void => {
 
     const data = await getCharacters(1);
 
-    expect(fetch).toHaveBeenCalledWith(new URL(`${API_URL}1`));
+    expect(fetch).toHaveBeenCalledWith(new URL(`${API_URL.PAGE}1`));
     expect(data).toEqual(ApiResponseSchema.parse(mockData));
   });
 
@@ -35,7 +35,7 @@ describe('getCharacters', (): void => {
 
     const data = await getCharacters(2, 'Rick');
 
-    const expectedUrl = new URL(`${API_URL}2`);
+    const expectedUrl = new URL(`${API_URL.PAGE}2`);
     expectedUrl.searchParams.set('name', 'Rick');
 
     expect(fetch).toHaveBeenCalledWith(expectedUrl);
