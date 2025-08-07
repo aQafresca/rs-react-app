@@ -1,44 +1,20 @@
 import styles from './Panel.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import type { TCharacter } from '@/shema/characterShema.ts';
-import { getCharacterById } from '@/core/api/getCharactersById.ts';
 import Loader from '@components/Loader/Loader.tsx';
 import CardDetail from '@components/CardList/Card/Detail/Detail.tsx';
 import Button from '@components/Button/Button.tsx';
 import { BUTTON_LABELS, ROUTES } from '@/constants/constants.ts';
 import { type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useCharacterById } from '@/hooks/useCharacterById.ts';
 
 const CardDetailPanel = (): JSX.Element => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [character, setCharacter] = useState<TCharacter | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  useEffect((): void => {
-    if (!id || isNaN(Number(id))) {
-      setError(true);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    setError(false);
-    const fetchDetailPanelData = async (): Promise<void> => {
-      try {
-        const data = await getCharacterById(Number(id));
-        setCharacter(data);
-      } catch (error) {
-        console.error('Error fetching character details:', error);
-        setError(true);
-        setCharacter(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    void fetchDetailPanelData();
-  }, [id]);
+  const characterId = Number(id);
+
+  const { data: character, isLoading, isError } = useCharacterById(characterId);
 
   const handleClose = (): void => {
     void navigate({
@@ -47,7 +23,7 @@ const CardDetailPanel = (): JSX.Element => {
     });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className={styles.detail__loader}>
         <Loader />
@@ -55,7 +31,11 @@ const CardDetailPanel = (): JSX.Element => {
     );
   }
 
-  if (error) {
+  if (isError) {
+    return <Navigate to={ROUTES.NOT_FOUND} replace />;
+  }
+
+  if (!character) {
     return <Navigate to={ROUTES.NOT_FOUND} replace />;
   }
 
