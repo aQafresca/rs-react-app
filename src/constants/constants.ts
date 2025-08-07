@@ -33,6 +33,7 @@ export const API_URL = {
 
 export const LOCALSTORAGE_KEYS = {
   SEARCH_QUERY: 'search_query',
+  THEME: 'theme',
 };
 
 export const ROUTES = {
