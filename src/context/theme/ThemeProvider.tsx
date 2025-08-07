@@ -9,6 +9,8 @@ import {
 import { ThemeContext } from '@/context/theme/ThemeContext.tsx';
 import type { Theme } from '@/type/interface.ts';
 
+import { LOCALSTORAGE_KEYS } from '@/constants/constants.ts';
+
 interface ThemeProviderProps {
   children: ReactNode;
 }
@@ -18,7 +20,7 @@ export const ThemeProvider = ({
 }: ThemeProviderProps): JSX.Element => {
   const [theme, setTheme] = useState<Theme>((): 'dark' | 'light' => {
     try {
-      const savedTheme = localStorage.getItem('theme');
+      const savedTheme = localStorage.getItem(LOCALSTORAGE_KEYS.THEME);
       return savedTheme === 'dark' || savedTheme === 'light'
         ? savedTheme
         : 'dark';
@@ -31,7 +33,7 @@ export const ThemeProvider = ({
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     try {
-      localStorage.setItem('theme', theme);
+      localStorage.setItem(LOCALSTORAGE_KEYS.THEME, theme);
     } catch (error) {
       console.error('Failed to save theme to localStorage:', error);
     }
