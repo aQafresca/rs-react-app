@@ -4,6 +4,12 @@ import { vi, it, describe, beforeEach, afterEach, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { PLACEHOLDERS, LOCALSTORAGE_KEYS } from '@/constants/constants.ts';
 
+const refreshMock = vi.fn();
+
+vi.mock('@/hooks/useCharactersRefresh.ts', () => ({
+  useCharactersRefresh: () => refreshMock,
+}));
+
 vi.mock('@components/BrokenComponent/BrokenComponent.tsx', () => ({
   default: () => <div data-testid="mock-broken-component">Broken!</div>,
 }));
@@ -134,5 +140,15 @@ describe('SearchBar', (): void => {
 
       'test search'
     );
+  });
+
+  it('calls refreshCharacters when refresh button is clicked', (): void => {
+    render(<SearchBar />);
+
+    const refreshButton = screen.getAllByTestId('mock-button')[1];
+
+    fireEvent.click(refreshButton);
+
+    expect(refreshMock).toHaveBeenCalledTimes(1);
   });
 });

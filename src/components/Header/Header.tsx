@@ -10,6 +10,7 @@ import { CiLight } from 'react-icons/ci';
 const Header = (): JSX.Element => {
   const { theme, toggleTheme } = useTheme();
   const Icon = theme === 'dark' ? CiLight : MdDarkMode;
+
   return (
     <div className={`container ${styles.header}`}>
       <div className={styles.header__content}>

@@ -1,6 +1,6 @@
 import styles from './CardList.module.scss';
-import { type JSX, useCallback, useEffect, useState } from 'react';
-import { getCharacters } from '@/core/api/getCharacters.ts';
+import { useCharacters } from '@/hooks/useCharacters.ts';
+import { type JSX, useCallback, useEffect } from 'react';
 import Card from '@components/CardList/Card/Card.tsx';
 import type { TCharacter } from '@/shema/characterShema.ts';
 import Loader from '@components/Loader/Loader.tsx';
@@ -10,12 +10,10 @@ import EmptyList from '@components/EmptyList/EmptyList.tsx';
 import { useSearchParams } from 'react-router-dom';
 import { useCardStore } from '@/core/store/useCardStore.ts';
 import Flyout from '@components/Flyout/Flyout.tsx';
+import toast from 'react-hot-toast';
 
 const CardList = (): JSX.Element => {
-  const [loading, setLoading] = useState(true);
-  const [characters, setCharacters] = useState<TCharacter[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [totalPages, setTotalPages] = useState(0);
 
   const selected = useCardStore((state) => state.selected);
   const currentPage = Number(searchParams.get('page')) || 1;
@@ -50,23 +48,13 @@ const CardList = (): JSX.Element => {
     };
   }, [searchParams, setSearchParams]);
 
-  useEffect((): void => {
-    const fetchData = async (): Promise<void> => {
-      setLoading(true);
-      try {
-        const response = await getCharacters(currentPage, query);
-        setCharacters(response.results);
-        setTotalPages(response.info.pages);
-      } catch (error) {
-        console.error('Error fetching characters:', error);
-        setTotalPages(0);
-        setCharacters([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    void fetchData();
-  }, [query, currentPage]);
+  const { data, isLoading, isError, error } = useCharacters(currentPage, query);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(`Error loading: ${error.message}`);
+    }
+  }, [isError, error]);
 
   const handlePageChange = useCallback(
     (page: number): void => {
@@ -88,20 +76,20 @@ const CardList = (): JSX.Element => {
 
   return (
     <div className={styles.wrapper}>
-      {loading && <Loader />}
-      {!loading && characters.length === 0 && <EmptyList />}
+      {isLoading && <Loader />}
+      {!isLoading && data?.results.length === 0 && <EmptyList />}
       <div className={styles.inner}>
-        {characters.map(
+        {data?.results.map(
           (char: TCharacter): JSX.Element => (
             <Card key={char.id} {...char} />
           )
         )}
       </div>
 
-      {!loading && characters.length !== 0 && (
+      {!isLoading && !isError && data?.results.length !== 0 && (
         <Pagination
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={data?.info.pages ?? 0}
           onPageChange={handlePageChange}
         />
       )}

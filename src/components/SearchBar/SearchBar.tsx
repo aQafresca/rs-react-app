@@ -7,11 +7,13 @@ import { FaSearch } from 'react-icons/fa';
 import { useRestoreSearchQuery } from '@/hooks/useRestoreSearchQuery.ts';
 import { PLACEHOLDERS, LOCALSTORAGE_KEYS } from '@/constants/constants.ts';
 import { searchStore } from '@/core/store/searchStore.ts';
+import { useCharactersRefresh } from '@/hooks/useCharactersRefresh.ts';
 
 const SearchBar = () => {
   const { inputValue, setInputValue } = useRestoreSearchQuery();
 
   const isFirstRender: RefObject<boolean> = useRef(true);
+  const refreshCharacters = useCharactersRefresh();
 
   useEffect(() => {
     if (isFirstRender.current && inputValue) {
@@ -41,6 +43,9 @@ const SearchBar = () => {
       />
       <Button onClick={handleSearchClick}>
         <FaSearch />
+      </Button>
+      <Button type={'button'} onClick={refreshCharacters}>
+        refresh
       </Button>
     </header>
   );
