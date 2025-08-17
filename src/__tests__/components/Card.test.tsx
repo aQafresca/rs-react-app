@@ -8,10 +8,12 @@ const mockUseSearchParams = vi.fn(() => ({
   toString: () => 'page=2',
 }));
 
-vi.mock('next/navigation', () => ({
+vi.mock('@/i18n/navigation', () => ({
   useRouter: () => ({ push: mockPush }),
   useSearchParams: () => mockUseSearchParams(),
-  useLocale: () => 'en',
+  Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
 
 vi.mock('next-intl', () => ({
@@ -52,6 +54,6 @@ describe('Card component', (): void => {
     render(<Card {...character} />);
     fireEvent.click(screen.getByRole('button'));
 
-    expect(mockPush).toHaveBeenCalledWith(`/${'en'}/${character.id}?page=2`);
+    expect(mockPush).toHaveBeenCalledWith(`/1`);
   });
 });

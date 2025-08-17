@@ -1,4 +1,45 @@
 import { describe, it, vi, expect } from 'vitest';
+
+vi.mock('next-intl/navigation', () => ({
+  createNavigation: vi.fn(() => ({
+    Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
+      <a href={href}>{children}</a>
+    ),
+    redirect: vi.fn(),
+    usePathname: vi.fn(),
+    useRouter: vi.fn(() => ({
+      push: vi.fn(),
+      replace: vi.fn(),
+    })),
+    getPathname: vi.fn(),
+  })),
+}));
+
+// Мокаем next/navigation
+vi.mock('next/navigation', () => ({
+  useRouter: vi.fn(),
+  usePathname: vi.fn(),
+  useSearchParams: vi.fn(),
+  redirect: vi.fn(),
+  notFound: vi.fn(),
+}));
+
+// Мокаем next-intl
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+  useLocale: () => 'en',
+}));
+
+// Мокаем @tanstack/react-query
+vi.mock('@tanstack/react-query', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('@tanstack/react-query')>();
+  return {
+    ...mod,
+    HydrationBoundary: ({ children }: { children: React.ReactNode }) =>
+      children,
+  };
+});
+
 import CharacterPage from '../../../../app/[locale]/[id]/page.tsx';
 import * as api from '@/core/api/getCharactersById';
 import * as apiAll from '@/core/api/getCharacters';
@@ -6,9 +47,6 @@ import * as nextNav from 'next/navigation';
 
 vi.mock('@/core/api/getCharactersById');
 vi.mock('@/core/api/getCharacters');
-vi.mock('next/navigation', () => ({
-  notFound: vi.fn(),
-}));
 
 describe('CharacterPage', () => {
   const mockCharacter = {
