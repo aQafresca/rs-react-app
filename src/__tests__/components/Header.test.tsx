@@ -50,7 +50,7 @@ describe('Header Component', () => {
   });
 
   it('renders all navigation links from menuLinks', (): void => {
-    const links = ['links.Home', 'links.about'];
+    const links = ['links.home', 'links.about'];
     links.forEach((text): void => {
       const linkElement: HTMLElement = screen.getByText(text);
       expect(linkElement).toBeInTheDocument();

@@ -18,7 +18,7 @@ const Header = (): JSX.Element => {
   const t = useTranslations('Header');
 
   const menuLinks: { route: string; caption: string }[] = [
-    { route: ROUTES.HOME, caption: t('links.Home') },
+    { route: ROUTES.HOME, caption: t('links.home') },
     { route: ROUTES.ABOUT, caption: t('links.about') },
   ];
 
