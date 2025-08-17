@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Flyout from '@components/Flyout/Flyout.tsx';
-import { BUTTON_LABELS } from '@/constants/constants';
 import * as cardStoreModule from '@/core/store/useCardStore';
+import * as downloadModule from '@/actions/download.ts';
 
-import { getMockCharacter } from '@/__tests__/__mocks__/getMockCharacter.ts';
+import { getMockCharacter } from '@/__tests__/__moks__/getMockCharacter.ts';
 
 vi.mock('file-saver', () => ({
   default: vi.fn(),
@@ -12,7 +12,11 @@ vi.mock('file-saver', () => ({
 
 import saveAs from 'file-saver';
 
-describe('Flyout component', (): void => {
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
+describe('Flyout component', () => {
   const clearMock = vi.fn();
 
   const selectedMock = {
@@ -20,6 +24,8 @@ describe('Flyout component', (): void => {
   };
 
   beforeEach(() => {
+    vi.clearAllMocks();
+
     vi.spyOn(cardStoreModule, 'useCardStore').mockImplementation((selector) =>
       selector({
         clear: clearMock,
@@ -29,27 +35,33 @@ describe('Flyout component', (): void => {
         toggle: vi.fn(),
       })
     );
-    vi.clearAllMocks();
   });
 
-  it('renders selected characters count', (): void => {
+  it('renders selected characters count', () => {
     render(<Flyout />);
     expect(screen.getByText('1')).toBeInTheDocument();
   });
 
-  it('calls clear on cancel button click', (): void => {
+  it('calls clear on cancel button click', () => {
     render(<Flyout />);
-    const cancelButton: HTMLElement = screen.getByText(BUTTON_LABELS.CANCEL);
+    const cancelButton = screen.getByText('labels.cancel');
     fireEvent.click(cancelButton);
     expect(clearMock).toHaveBeenCalledTimes(1);
   });
 
-  it('calls saveAs on download button click', (): void => {
+  it('calls saveAs on download button click', async () => {
+    // мок createCsv
+    const blob = new Blob(['test']);
+    vi.spyOn(downloadModule, 'createCsv').mockResolvedValue(blob);
+
     render(<Flyout />);
-    const downloadButton: HTMLElement = screen.getByText(
-      BUTTON_LABELS.DOWNLOAD
+    const downloadButton = screen.getByText('labels.download');
+
+    await fireEvent.click(downloadButton);
+
+    expect(downloadModule.createCsv).toHaveBeenCalledWith(
+      Object.values(selectedMock)
     );
-    fireEvent.click(downloadButton);
-    expect(saveAs).toHaveBeenCalledTimes(1);
+    expect(saveAs).toHaveBeenCalledWith(blob, 'selected 1 characters.csv');
   });
 });

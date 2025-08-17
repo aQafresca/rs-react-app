@@ -1,11 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
-import Header from '@/components/Header/Header.tsx';
-import { menuLinks } from '@/constants/constants.ts';
-import { ThemeProvider } from '@/context/theme/ThemeProvider.tsx';
+import Header from '@/components/Header/Header';
+import { ThemeProvider } from '@/context/theme/ThemeProvider';
+import React from 'react';
 
-vi.mock('@components/Button/Button.tsx', () => ({
+vi.mock('@components/Button/Button', () => ({
   default: ({
     onClick,
     children,
@@ -19,22 +18,42 @@ vi.mock('@components/Button/Button.tsx', () => ({
   ),
 }));
 
+vi.mock('@components/localeSwitcher/LocaleSwitcher', () => ({
+  default: () => <div>LocaleSwitcher</div>,
+}));
+
+const toggleThemeMock = vi.fn();
+vi.mock('@/hooks/useTheme', () => ({
+  useTheme: () => ({
+    theme: 'light',
+    toggleTheme: toggleThemeMock,
+  }),
+}));
+
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
+vi.mock('@/i18n/navigation', () => ({
+  Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <a href={href}>{children}</a>
+  ),
+}));
+
 describe('Header Component', () => {
   beforeEach(() => {
     render(
-      <BrowserRouter>
-        <ThemeProvider>
-          <Header />
-        </ThemeProvider>
-      </BrowserRouter>
+      <ThemeProvider>
+        <Header />
+      </ThemeProvider>
     );
   });
 
   it('renders all navigation links from menuLinks', (): void => {
-    menuLinks.forEach((link): void => {
-      const linkElement = screen.getByText(link.caption);
+    const links = ['links.Home', 'links.about'];
+    links.forEach((text): void => {
+      const linkElement: HTMLElement = screen.getByText(text);
       expect(linkElement).toBeInTheDocument();
-      expect(linkElement).toHaveAttribute('href', link.route);
       expect(linkElement.tagName).toBe('A');
     });
   });
@@ -46,19 +65,14 @@ describe('Header Component', () => {
   it('renders the theme toggle icon inside button', (): void => {
     const button = screen.getByRole('button');
     expect(button).toBeInTheDocument();
-    expect(button.innerHTML).not.toBe(''); // проверка, что иконка есть
+    expect(button.innerHTML).not.toBe('');
   });
 
-  it('toggles theme when button is clicked', async (): Promise<void> => {
+  it('toggles theme when button is clicked', async () => {
     const button = screen.getByRole('button');
-    const initialTheme = document.documentElement.getAttribute('data-theme');
-
     fireEvent.click(button);
-
-    await waitFor(() => {
-      const newTheme = document.documentElement.getAttribute('data-theme');
-      expect(newTheme).not.toBe(initialTheme);
-      expect(newTheme).not.toBeNull();
+    await waitFor((): void => {
+      expect(toggleThemeMock).toHaveBeenCalled();
     });
   });
 });

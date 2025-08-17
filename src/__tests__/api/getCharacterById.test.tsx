@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getCharacterById } from '@/core/api/getCharactersById.ts';
-import { CharacterSchema } from '@/shema/characterShema.ts';
+import { CharacterSchema } from '@/scheme/characterScheme.ts';
 import { API_URL } from '@/constants/constants.ts';
 import { character } from '@/constants/tests.ts';
 

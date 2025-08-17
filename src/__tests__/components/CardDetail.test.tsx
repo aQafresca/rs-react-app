@@ -1,31 +1,46 @@
 import { render, screen } from '@testing-library/react';
-import CardDetail from '@components/CardList/Card/Detail/Detail.tsx';
-import { CHAR } from '@/constants/constants';
-import { expect, it, describe } from 'vitest';
+import CardDetail from '@components/CardList/Card/Detail/Detail';
+import { describe, it, expect, vi } from 'vitest';
 import { character } from '@/constants/tests.ts';
 
-describe('CardDetail', (): void => {
-  it('renders character name', (): void => {
+vi.mock('next-intl', () => ({
+  useTranslations:
+    () =>
+    (key: string): string =>
+      key,
+}));
+
+describe('CardDetail', () => {
+  it('renders character name if provided', (): void => {
     render(<CardDetail {...character} />);
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(
-      character.name
-    );
+    const heading = screen.getByRole('heading', { level: 3 });
+    expect(heading).toBeInTheDocument();
+    expect(heading).toHaveTextContent(character.name);
   });
 
-  it('renders origin label and value', (): void => {
+  it('renders origin label and value if provided', (): void => {
     render(<CardDetail {...character} />);
-    expect(screen.getByText(CHAR.ORIGIN)).toBeInTheDocument();
+    expect(screen.getByText('char.origin')).toBeInTheDocument();
     expect(screen.getByText(character.origin.name)).toBeInTheDocument();
   });
 
-  it('renders location label and value', (): void => {
+  it('renders location label and value if provided', (): void => {
     render(<CardDetail {...character} />);
-    expect(screen.getByText(CHAR.LOCATION)).toBeInTheDocument();
+    expect(screen.getByText('char.location')).toBeInTheDocument();
     expect(screen.getByText(character.location.name)).toBeInTheDocument();
   });
 
-  it('renders without crashing when optional props are missing', (): void => {
+  it('renders safely without props', (): void => {
     render(<CardDetail />);
-    expect(screen.queryByRole('heading', { level: 3 })).toBeInTheDocument();
+
+    const heading = screen.getByRole('heading', { level: 3 });
+    expect(heading).toBeInTheDocument();
+    expect(heading.textContent).toBe('');
+
+    const originLabel = screen.getByText('char.origin');
+    expect(originLabel).toBeInTheDocument();
+
+    const locationLabel = screen.getByText('char.location');
+    expect(locationLabel).toBeInTheDocument();
   });
 });
