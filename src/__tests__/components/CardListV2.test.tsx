@@ -27,7 +27,7 @@ vi.mock('next/navigation', () => ({
     toString: () => '',
   })),
   redirect: vi.fn(),
-  notFound: vi.fn(), // Добавил notFound на всякий случай
+  notFound: vi.fn(),
 }));
 
 vi.mock('next-intl', () => ({

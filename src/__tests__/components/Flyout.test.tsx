@@ -50,7 +50,6 @@ describe('Flyout component', () => {
   });
 
   it('calls saveAs on download button click', async () => {
-    // мок createCsv
     const blob = new Blob(['test']);
     vi.spyOn(downloadModule, 'createCsv').mockResolvedValue(blob);
 

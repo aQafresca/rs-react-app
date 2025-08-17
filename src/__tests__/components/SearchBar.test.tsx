@@ -19,7 +19,6 @@ vi.mock('@/hooks/useCharactersRefresh.ts', () => ({
   useCharactersRefresh: () => refreshMock,
 }));
 
-// Моки для дочерних компонентов
 vi.mock('@components/Button/Button.tsx', () => ({
   default: ({
     children,

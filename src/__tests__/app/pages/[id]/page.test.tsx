@@ -15,7 +15,6 @@ vi.mock('next-intl/navigation', () => ({
   })),
 }));
 
-// Мокаем next/navigation
 vi.mock('next/navigation', () => ({
   useRouter: vi.fn(),
   usePathname: vi.fn(),
@@ -24,13 +23,11 @@ vi.mock('next/navigation', () => ({
   notFound: vi.fn(),
 }));
 
-// Мокаем next-intl
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
   useLocale: () => 'en',
 }));
 
-// Мокаем @tanstack/react-query
 vi.mock('@tanstack/react-query', async (importOriginal) => {
   const mod = await importOriginal<typeof import('@tanstack/react-query')>();
   return {
@@ -66,11 +63,11 @@ describe('CharacterPage', () => {
   };
 
   it('renders correctly with valid id', async () => {
-    (api.getCharacterById as any).mockResolvedValue(mockCharacter);
-    (apiAll.getCharacters as any).mockResolvedValue(mockResponse);
+    vi.spyOn(api, 'getCharacterById').mockResolvedValue(mockCharacter);
+    vi.spyOn(apiAll, 'getCharacters').mockResolvedValue(mockResponse);
 
-    const params = { params: { id: '1' } };
-    const result = await CharacterPage(params as any);
+    const params: { params: { id: string } } = { params: { id: '1' } };
+    const result = await CharacterPage(params);
 
     expect(result).toBeTruthy();
     expect(result.props.children.props.className).toContain('home');
@@ -80,7 +77,7 @@ describe('CharacterPage', () => {
     const notFoundMock = vi.spyOn(nextNav, 'notFound');
 
     const params = { params: { id: 'abc' } };
-    await CharacterPage(params as any);
+    await CharacterPage(params);
 
     expect(notFoundMock).toHaveBeenCalled();
   });

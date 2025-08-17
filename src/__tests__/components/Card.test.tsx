@@ -2,6 +2,7 @@ import Card from '@components/CardList/Card/Card';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { character } from '@/constants/tests.ts';
+import React from 'react';
 
 const mockPush = vi.fn();
 const mockUseSearchParams = vi.fn(() => ({
@@ -22,7 +23,7 @@ vi.mock('next-intl', () => ({
 }));
 
 vi.mock('next/image', () => ({
-  default: (props: any) => {
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
     return <img {...props} alt={character.name} />;
   },
 }));
