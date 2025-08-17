@@ -1,3 +1,5 @@
+'use client';
+
 import {
   useEffect,
   useState,
@@ -6,10 +8,9 @@ import {
   type JSX,
   useMemo,
 } from 'react';
-import { ThemeContext } from '@/context/theme/ThemeContext.tsx';
-import type { Theme } from '@/type/interface.ts';
+import { ThemeContext } from '@/context/theme/ThemeContext';
 
-import { LOCALSTORAGE_KEYS } from '@/constants/constants.ts';
+import { LOCALSTORAGE_KEYS } from '@/constants/constants';
 
 interface ThemeProviderProps {
   children: ReactNode;
@@ -18,17 +19,17 @@ interface ThemeProviderProps {
 export const ThemeProvider = ({
   children,
 }: ThemeProviderProps): JSX.Element => {
-  const [theme, setTheme] = useState<Theme>((): 'dark' | 'light' => {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  useEffect(() => {
     try {
       const savedTheme = localStorage.getItem(LOCALSTORAGE_KEYS.THEME);
-      return savedTheme === 'dark' || savedTheme === 'light'
-        ? savedTheme
-        : 'dark';
+      if (savedTheme === 'dark' || savedTheme === 'light') {
+        setTheme(savedTheme);
+      }
     } catch (error) {
-      console.error(error);
-      return 'dark';
+      console.error('Error accessing localStorage', error);
     }
-  });
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -47,5 +48,9 @@ export const ThemeProvider = ({
     return { theme, toggleTheme };
   }, [theme, toggleTheme]);
 
-  return <ThemeContext value={contextValue}>{children}</ThemeContext>;
+  return (
+    <ThemeContext.Provider value={contextValue}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };

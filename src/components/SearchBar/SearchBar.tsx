@@ -1,53 +1,48 @@
-import { useEffect, useRef, type RefObject } from 'react';
-import * as React from 'react';
+'use client';
+
+import { useState, type JSX } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import styles from './SearchBar.module.scss';
 import Button from '@components/Button/Button.tsx';
 import InputElement from '@components/Input/Input.tsx';
 import { FaSearch } from 'react-icons/fa';
-import { useRestoreSearchQuery } from '@/hooks/useRestoreSearchQuery.ts';
-import { PLACEHOLDERS, LOCALSTORAGE_KEYS } from '@/constants/constants.ts';
-import { searchStore } from '@/core/store/searchStore.ts';
+import { useTranslations } from 'next-intl';
 import { useCharactersRefresh } from '@/hooks/useCharactersRefresh.ts';
 
-const SearchBar = () => {
-  const { inputValue, setInputValue } = useRestoreSearchQuery();
+const SearchBar = (): JSX.Element => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const t = useTranslations();
 
-  const isFirstRender: RefObject<boolean> = useRef(true);
+  const [query, setQuery] = useState<string>(searchParams.get('name') ?? '');
+
   const refreshCharacters = useCharactersRefresh();
 
-  useEffect(() => {
-    if (isFirstRender.current && inputValue) {
-      searchStore.setQuery(inputValue);
-      isFirstRender.current = false;
-    }
-  }, [inputValue]);
-
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    setInputValue(event.target.value);
-  };
-
   const handleSearchClick = (): void => {
-    const trimmedValue: string = inputValue.trim();
-    searchStore.setQuery(trimmedValue);
-    localStorage.setItem(LOCALSTORAGE_KEYS.SEARCH_QUERY, trimmedValue);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    if (query.trim()) {
+      newSearchParams.set('name', query.trim());
+    } else {
+      newSearchParams.delete('name');
+    }
+    newSearchParams.delete('page');
+    router.replace(`?${newSearchParams.toString()}`);
   };
 
   return (
-    <header className={`container ${styles.bar}`}>
+    <div className={`container ${styles.bar}`}>
       <InputElement
-        placeholder={PLACEHOLDERS.SEARCH}
-        value={inputValue}
-        onChange={handleInputChange}
+        placeholder={t('SearchBar.placeholders.search')}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
       />
       <Button onClick={handleSearchClick}>
         <FaSearch />
       </Button>
       <Button type={'button'} onClick={refreshCharacters}>
-        refresh
+        {t('buttons.labels.refresh')}
       </Button>
-    </header>
+    </div>
   );
 };
 

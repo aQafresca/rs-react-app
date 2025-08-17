@@ -1,7 +1,7 @@
 import {
   ApiResponseSchema,
   type TApiResponse,
-} from '@/shema/characterShema.ts';
+} from '@/scheme/characterScheme.ts';
 import { API_URL } from '@/constants/constants.ts';
 
 export const getCharacters = async (
@@ -9,6 +9,8 @@ export const getCharacters = async (
   query = ''
 ): Promise<TApiResponse> => {
   const url = new URL(`${API_URL.PAGE}${page}`);
+
+  console.log('Fetching:', url.toString());
 
   if (query.trim()) {
     url.searchParams.append('name', query.trim());

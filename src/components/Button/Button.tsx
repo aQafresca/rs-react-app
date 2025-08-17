@@ -1,7 +1,5 @@
 import styles from './Button.module.scss';
 import type { ButtonHTMLAttributes, FC, JSX } from 'react';
-import clsx from 'clsx';
-
 type TButtonVariant = 'primary' | 'secondary';
 type TButtonSize = 'x-small' | 'small' | 'medium' | 'large';
 
@@ -21,7 +19,7 @@ const ButtonElement: FC<IButtonProps> = ({
   return (
     <button
       type={type}
-      className={clsx(styles.button, styles[variant], styles[size], className)}
+      className={`${styles.button} ${styles[variant]} ${styles[size]} ${className}`}
       {...rest}
     >
       {children}

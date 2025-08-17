@@ -1,42 +1,49 @@
+'use client';
+
 import styles from './Panel.module.scss';
-import { useNavigate, useParams } from 'react-router-dom';
-import Loader from '@components/Loader/Loader.tsx';
 import CardDetail from '@components/CardList/Card/Detail/Detail.tsx';
 import Button from '@components/Button/Button.tsx';
-import { BUTTON_LABELS, ROUTES } from '@/constants/constants.ts';
-import { type JSX } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useCharacterById } from '@/hooks/useCharacterById.ts';
+import { BUTTON_LABELS } from '@/constants/constants.ts';
+import { useRouter } from 'next/navigation';
+import { useCharacterById } from '@/hooks/getCharactersById.ts';
+import Loader from '@components/Loader/Loader.tsx';
+import toast from 'react-hot-toast';
+import { useLocale } from 'next-intl';
 
-const CardDetailPanel = (): JSX.Element => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+interface ICardDetailPanelProps {
+  characterId: number;
+}
 
-  const characterId = Number(id);
+const CardDetailPanel = ({ characterId }: ICardDetailPanelProps) => {
+  const router = useRouter();
 
-  const { data: character, isLoading, isError } = useCharacterById(characterId);
+  const {
+    data: character,
+    isLoading,
+    isError,
+    error,
+  } = useCharacterById(characterId);
+
+  const currentLocale = useLocale();
 
   const handleClose = (): void => {
-    void navigate({
-      pathname: ROUTES.HOME,
-      search: location.search,
-    });
+    router.replace(`/${currentLocale}`);
   };
 
   if (isLoading) {
     return (
-      <div className={styles.detail__loader}>
+      <div>
         <Loader />
       </div>
     );
   }
 
   if (isError) {
-    return <Navigate to={ROUTES.NOT_FOUND} replace />;
+    toast.error(`Error loading: ${error.message}`);
   }
 
   if (!character) {
-    return <Navigate to={ROUTES.NOT_FOUND} replace />;
+    return null;
   }
 
   return (
