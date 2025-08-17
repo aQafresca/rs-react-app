@@ -1,9 +1,10 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useCharacterById } from '@/hooks/useCharacterById';
+import { useCharacterById } from '@/hooks/getCharactersById.ts';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { baseCharacter } from '@/constants/tests.ts';
 import * as api from '@/core/api/getCharactersById';
+import * as React from 'react';
 
 vi.mock('@/core/api/getCharactersById');
 

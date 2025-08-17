@@ -1,4 +1,4 @@
-import { CharacterSchema, type TCharacter } from '@/shema/characterShema.ts';
+import { CharacterSchema, type TCharacter } from '@/scheme/characterScheme.ts';
 import { API_URL } from '@/constants/constants.ts';
 
 export const getCharacterById = async (id: number): Promise<TCharacter> => {

@@ -7,18 +7,6 @@ export const BUTTON_LABELS = {
   DOWNLOAD: 'Download',
 };
 
-export const PLACEHOLDERS = {
-  SEARCH: 'Rick Sanchez',
-};
-
-export const CHAR = {
-  STATUS: 'Status:',
-  SPECIES: 'Species:',
-  GENDER: 'Gender:',
-  ORIGIN: 'Origin:',
-  LOCATION: 'Location:',
-};
-
 export const BASE_LIMIT_VISIBLE_PAGINATION = 3;
 export const ELLIPSIS = '.';
 
@@ -42,11 +30,6 @@ export const ROUTES = {
   CHARACTERS: '/characters',
   NOT_FOUND: '404',
 };
-
-export const menuLinks: { route: string; caption: string }[] = [
-  { route: ROUTES.HOME, caption: 'Home' },
-  { route: ROUTES.ABOUT, caption: 'About' },
-];
 
 export const NOT_FOUND = {
   ERROR: 'error 404',

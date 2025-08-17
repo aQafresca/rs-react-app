@@ -1,0 +1,25 @@
+@use '../../assets/styles/helpers/mixins' as *;
+@use '../../assets/styles/helpers/functions' as *;
+
+$c-bg: var(--c-bg-button);
+$c-text: var(--c-main);
+
+.switcher {
+  &__container {
+    @include flex-center;
+
+    gap: rem(10);
+    padding-right: rem(10);
+  }
+
+  &__select {
+    width: rem(40);
+    height: rem(25);
+    border: none;
+
+    color: $c-text;
+
+    background-color: $c-bg;
+    outline: none;
+  }
+}

@@ -1,5 +1,5 @@
 import { create } from 'zustand/react';
-import type { TCharacter } from '@/shema/characterShema.ts';
+import type { TCharacter } from '@/scheme/characterScheme.ts';
 
 interface ICardState {
   selected: Record<number, TCharacter>;

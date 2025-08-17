@@ -1,0 +1,15 @@
+@use '../../../assets/styles/helpers/media' as *;
+
+.home {
+  &__content {
+    display: flex;
+  }
+
+  &__shrunk {
+    flex-basis: 70%;
+
+    @include mobile {
+      display: none;
+    }
+  }
+}

@@ -1,30 +1,33 @@
 import SearchBar from '@components/SearchBar/SearchBar.tsx';
 import * as React from 'react';
-import { vi, it, describe, beforeEach, afterEach, expect } from 'vitest';
+import { vi, it, describe, beforeEach, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { PLACEHOLDERS, LOCALSTORAGE_KEYS } from '@/constants/constants.ts';
 
-const refreshMock = vi.fn();
+const replaceMock = vi.fn();
+const searchParamsMock = {
+  get: vi.fn(),
+  toString: vi.fn(),
+};
 
-vi.mock('@/hooks/useCharactersRefresh.ts', () => ({
-  useCharactersRefresh: () => refreshMock,
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ replace: replaceMock }),
+  useSearchParams: () => searchParamsMock,
 }));
 
-vi.mock('@components/BrokenComponent/BrokenComponent.tsx', () => ({
-  default: () => <div data-testid="mock-broken-component">Broken!</div>,
+const refreshMock = vi.fn();
+vi.mock('@/hooks/useCharactersRefresh.ts', () => ({
+  useCharactersRefresh: () => refreshMock,
 }));
 
 vi.mock('@components/Button/Button.tsx', () => ({
   default: ({
     children,
-
     onClick,
   }: {
     children: React.ReactNode;
-
     onClick: () => void;
   }) => (
-    <button type="button" onClick={onClick} data-testid="mock-button">
+    <button data-testid="mock-button" onClick={onClick}>
       {children}
     </button>
   ),
@@ -33,15 +36,11 @@ vi.mock('@components/Button/Button.tsx', () => ({
 vi.mock('@components/Input/Input.tsx', () => ({
   default: ({
     placeholder,
-
     value,
-
     onChange,
   }: {
     placeholder: string;
-
     value: string;
-
     onChange: React.ChangeEventHandler<HTMLInputElement>;
   }) => (
     <input
@@ -53,92 +52,49 @@ vi.mock('@components/Input/Input.tsx', () => ({
   ),
 }));
 
-const localStorageMock = (() => {
-  let store: Record<string, string> = {};
+vi.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
 
-  return {
-    getItem: vi.fn((key: string): string | null => store[key] || null),
-
-    setItem: vi.fn((key: string, value: string): void => {
-      store[key] = value;
-    }),
-
-    clear: vi.fn((): void => {
-      store = {};
-    }),
-
-    removeItem: vi.fn((key: string): void => {
-      delete store[key];
-    }),
-  };
-})();
-
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-
-describe('SearchBar', (): void => {
-  beforeEach((): void => {
+describe('SearchBar', () => {
+  beforeEach(() => {
     vi.clearAllMocks();
-
-    localStorageMock.clear();
-  });
-
-  afterEach((): void => {
-    vi.restoreAllMocks();
+    searchParamsMock.get.mockReturnValue('');
+    searchParamsMock.toString.mockReturnValue('');
   });
 
   it('renders input and buttons with correct placeholders/labels', (): void => {
     render(<SearchBar />);
 
     expect(
-      screen.getByPlaceholderText(PLACEHOLDERS.SEARCH)
+      screen.getByPlaceholderText('SearchBar.placeholders.search')
     ).toBeInTheDocument();
-
     expect(screen.getByTestId('mock-input')).toHaveValue('');
 
-    const searchButton: HTMLElement = screen.getAllByTestId('mock-button')[0];
-
-    expect(searchButton).toBeInTheDocument();
+    const buttons = screen.getAllByTestId('mock-button');
+    expect(buttons).toHaveLength(2);
   });
 
-  it('loads saved search query from localStorage on mount', (): void => {
-    const savedQuery = 'rick and morty';
-
-    localStorageMock.setItem(LOCALSTORAGE_KEYS.SEARCH_QUERY, savedQuery);
-
+  it('updates input value on change', (): void => {
     render(<SearchBar />);
 
-    expect(localStorageMock.getItem).toHaveBeenCalledWith(
-      LOCALSTORAGE_KEYS.SEARCH_QUERY
-    );
+    const input = screen.getByTestId('mock-input');
+    fireEvent.change(input, { target: { value: 'new query' } });
 
-    expect(screen.getByTestId('mock-input')).toHaveValue(savedQuery);
+    expect(input).toHaveValue('new query');
   });
 
-  it('updates input value on change without trimming', (): void => {
+  it('calls router.replace with new query on search button click', (): void => {
     render(<SearchBar />);
 
-    const inputElement: HTMLElement = screen.getByTestId('mock-input');
+    const input = screen.getByTestId('mock-input');
+    const searchButton = screen.getAllByTestId('mock-button')[0];
 
-    fireEvent.change(inputElement, { target: { value: ' new query ' } });
-
-    expect(inputElement).toHaveValue(' new query ');
-  });
-
-  it('saves query to localStorage on search button click', (): void => {
-    render(<SearchBar />);
-
-    const inputElement: HTMLElement = screen.getByTestId('mock-input');
-
-    const searchButton: HTMLElement = screen.getAllByTestId('mock-button')[0];
-
-    fireEvent.change(inputElement, { target: { value: 'test search' } });
-
+    fireEvent.change(input, { target: { value: 'rick and morty' } });
     fireEvent.click(searchButton);
 
-    expect(localStorageMock.setItem).toHaveBeenCalledWith(
-      LOCALSTORAGE_KEYS.SEARCH_QUERY,
-
-      'test search'
+    expect(replaceMock).toHaveBeenCalledWith(
+      expect.stringContaining('name=rick+and+morty')
     );
   });
 
@@ -146,7 +102,6 @@ describe('SearchBar', (): void => {
     render(<SearchBar />);
 
     const refreshButton = screen.getAllByTestId('mock-button')[1];
-
     fireEvent.click(refreshButton);
 
     expect(refreshMock).toHaveBeenCalledTimes(1);

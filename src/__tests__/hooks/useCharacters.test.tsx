@@ -3,8 +3,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCharacters } from '@/hooks/useCharacters';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import * as api from '@/core/api/getCharacters';
-import type { TApiResponse } from '@/shema/characterShema.ts';
+import type { TApiResponse } from '@/scheme/characterScheme.ts';
 import { mockData } from '@/constants/tests.ts';
+import * as React from 'react';
 
 vi.mock('@/core/api/getCharacters');
 
