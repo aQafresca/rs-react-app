@@ -4,11 +4,10 @@ import styles from './Panel.module.scss';
 import CardDetail from '@components/CardList/Card/Detail/Detail.tsx';
 import Button from '@components/Button/Button.tsx';
 import { BUTTON_LABELS } from '@/constants/constants.ts';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { useCharacterById } from '@/hooks/getCharactersById.ts';
 import Loader from '@components/Loader/Loader.tsx';
 import toast from 'react-hot-toast';
-import { useLocale } from 'next-intl';
 
 interface ICardDetailPanelProps {
   characterId: number;
@@ -24,10 +23,8 @@ const CardDetailPanel = ({ characterId }: ICardDetailPanelProps) => {
     error,
   } = useCharacterById(characterId);
 
-  const currentLocale = useLocale();
-
   const handleClose = (): void => {
-    router.replace(`/${currentLocale}`);
+    router.replace(`/`);
   };
 
   if (isLoading) {

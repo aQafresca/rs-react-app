@@ -3,15 +3,16 @@
 import styles from './Card.module.scss';
 import type { TCharacter } from '@/scheme/characterScheme.ts';
 import { type JSX } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
+
 import { useCardStore } from '@/core/store/useCardStore.ts';
 import Image from 'next/image';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 const Card = (props: TCharacter): JSX.Element => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentLocale = useLocale();
   const t = useTranslations('Cards');
 
   const selected = useCardStore((state) => state.selected);
@@ -19,7 +20,7 @@ const Card = (props: TCharacter): JSX.Element => {
 
   const handleClick = (): void => {
     const search = searchParams?.toString();
-    router.push(`/${currentLocale}/${props.id}${search ? `?${search}` : ''}`);
+    router.push(`/${props.id}${search ? `?${search}` : ''}`);
   };
 
   const handleCheckboxChange = (): void => {
