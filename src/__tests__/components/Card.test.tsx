@@ -21,7 +21,7 @@ vi.mock('next-intl', () => ({
 
 vi.mock('next/image', () => ({
   default: (props: any) => {
-    return <img {...props} alt={props.name} />;
+    return <img {...props} alt={character.name} />;
   },
 }));
 
