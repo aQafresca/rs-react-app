@@ -1,0 +1,18 @@
+.list {
+  cursor: pointer;
+
+  position: absolute;
+  z-index: 100;
+  left: 83px;
+
+  min-width: 200px;
+
+  text-align: center;
+
+  background-color: black;
+}
+
+.error {
+  height: 20px;
+  color: red;
+}
