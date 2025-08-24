@@ -7,7 +7,7 @@ interface AutocompleteFieldProps {
   label: string;
   name: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (_value: string) => void;
   error?: string;
 }
 

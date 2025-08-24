@@ -16,7 +16,7 @@ interface IFormFieldProps {
 
 vi.mock('@components/upload/image', () => {
   return {
-    default: ({ onFileChange }: { onFileChange: (s: string) => void }) => (
+    default: ({ onFileChange }: { onFileChange: (_s: string) => void }) => (
       <div onClick={() => onFileChange('data:image/png;base64,AAA')}>UploadImage Mock</div>
     ),
   };
